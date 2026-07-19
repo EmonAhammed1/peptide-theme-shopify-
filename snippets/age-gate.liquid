@@ -1,0 +1,141 @@
+{% comment %} Age Gate — Full-screen overlay, blocks all site access {% endcomment %}
+
+<div id="age-gate-overlay" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:#080B10; z-index:99999; overflow-y:auto;">
+  <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; padding:40px 20px;">
+    <div style="max-width:520px; width:100%; text-align:center;">
+
+      <!-- Store Name -->
+      <div style="font-family:'JetBrains Mono',monospace; font-size:13px; font-weight:800; color:#3cd6c4; text-transform:uppercase; letter-spacing:0.2em; margin-bottom:28px;">
+        {{ shop.name | upcase }}
+      </div>
+
+      <!-- Label -->
+      <div style="font-family:'JetBrains Mono',monospace; font-size:10px; font-weight:700; color:#6b7280; text-transform:uppercase; letter-spacing:0.18em; margin-bottom:16px;">
+        // AGE VERIFICATION
+      </div>
+
+      <!-- Heading -->
+      <h1 style="font-family:'Space Grotesk',sans-serif; font-size:clamp(26px,5vw,36px); font-weight:800; color:#ffffff; margin:0 0 16px 0; line-height:1.2;">
+        You Must Be 21 or Older
+      </h1>
+
+      <!-- Description -->
+      <p style="font-family:'Space Grotesk',sans-serif; font-size:14px; color:#8a929e; line-height:1.7; margin:0 auto 32px; max-width:420px;">
+        This site is restricted to qualified researchers and adults aged 21 and over.
+        By entering you confirm you meet these requirements.
+        All products are strictly for <strong style="color:#ffffff;">research use only</strong>.
+      </p>
+
+      <!-- Checkbox Agreement -->
+      <label id="age-gate-checkbox-label" for="age-gate-checkbox" style="display:flex; align-items:flex-start; gap:14px; cursor:pointer; text-align:left; background:rgba(60,214,196,0.04); border:1px solid #1f2937; border-radius:8px; padding:18px 20px; margin-bottom:24px; transition:border-color 0.3s ease;">
+        <div style="flex-shrink:0; margin-top:2px;">
+          <input
+            type="checkbox"
+            id="age-gate-checkbox"
+            onchange="ageGateCheckboxChange()"
+            style="width:18px; height:18px; accent-color:#3cd6c4; cursor:pointer; margin:0;"
+          >
+        </div>
+        <span style="font-family:'Space Grotesk',sans-serif; font-size:13px; color:#8a929e; line-height:1.6;">
+          I confirm that I am <strong style="color:#ffffff;">21 years of age or older</strong>, I am a qualified researcher, and I understand that all products on this site are intended for <strong style="color:#3cd6c4;">research use only</strong> and are not for human consumption.
+        </span>
+      </label>
+
+      <!-- Enter Button (disabled until checkbox ticked) -->
+      <button
+        onclick="ageGateConfirm()"
+        id="age-gate-enter-btn"
+        disabled
+        style="display:block; width:100%; padding:18px 24px; background:#1f2937; color:#4b5563; border:none; border-radius:4px; font-family:'JetBrains Mono',monospace; font-size:12px; font-weight:800; text-transform:uppercase; letter-spacing:0.12em; cursor:not-allowed; transition:all 0.3s ease; margin-bottom:18px;"
+      >
+        I AM 21 OR OLDER — ENTER SITE
+      </button>
+
+      <!-- Leave Link -->
+      <a
+        href="https://www.google.com"
+        style="display:block; font-family:'JetBrains Mono',monospace; font-size:10px; color:#4b5563; text-decoration:none; text-transform:uppercase; letter-spacing:0.1em; transition:color 0.3s ease;"
+        onmouseover="this.style.color='#6b7280'"
+        onmouseout="this.style.color='#4b5563'"
+      >
+        I AM UNDER 21 — LEAVE
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Hide the header and announcement bar while age gate is active */
+  body.age-gate-active .section-header,
+  body.age-gate-active header-group,
+  body.age-gate-active .header-wrapper,
+  body.age-gate-active #shopify-section-announcement-bar,
+  body.age-gate-active sticky-header {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  #age-gate-enter-btn:not([disabled]):hover {
+    background: #2eb8a8 !important;
+    color: #000000 !important;
+    cursor: pointer !important;
+  }
+
+  #age-gate-checkbox-label:has(input:checked) {
+    border-color: rgba(60, 214, 196, 0.4) !important;
+    background: rgba(60, 214, 196, 0.06) !important;
+  }
+</style>
+
+<script>
+  (function() {
+    var confirmed = sessionStorage.getItem('age-gate-confirmed');
+    if (!confirmed) {
+      var overlay = document.getElementById('age-gate-overlay');
+      if (overlay) {
+        overlay.style.display = 'block';
+        document.body.classList.add('age-gate-active');
+        document.body.style.overflow = 'hidden';
+      }
+    }
+  })();
+
+  function ageGateCheckboxChange() {
+    var checkbox = document.getElementById('age-gate-checkbox');
+    var btn = document.getElementById('age-gate-enter-btn');
+    if (checkbox && btn) {
+      if (checkbox.checked) {
+        btn.disabled = false;
+        btn.style.background = '#3cd6c4';
+        btn.style.color = '#000000';
+        btn.style.cursor = 'pointer';
+      } else {
+        btn.disabled = true;
+        btn.style.background = '#1f2937';
+        btn.style.color = '#4b5563';
+        btn.style.cursor = 'not-allowed';
+      }
+    }
+  }
+
+  function ageGateConfirm() {
+    var checkbox = document.getElementById('age-gate-checkbox');
+    if (!checkbox || !checkbox.checked) return;
+
+    sessionStorage.setItem('age-gate-confirmed', 'true');
+    var overlay = document.getElementById('age-gate-overlay');
+    if (overlay) {
+      overlay.style.transition = 'opacity 0.5s ease';
+      overlay.style.opacity = '1';
+      setTimeout(function() {
+        overlay.style.opacity = '0';
+        setTimeout(function() {
+          overlay.style.display = 'none';
+          document.body.classList.remove('age-gate-active');
+          document.body.style.overflow = '';
+        }, 500);
+      }, 10);
+    }
+  }
+</script>

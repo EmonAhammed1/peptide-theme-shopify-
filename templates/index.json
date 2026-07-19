@@ -1,0 +1,115 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "custom_hero": {
+      "type": "custom-hero",
+      "settings": {
+        "primary_text": "SHOP NOW",
+        "primary_url": "shopify://collections/all",
+        "secondary_text": "VIEW COMPOUNDS",
+        "secondary_url": "shopify://collections/all",
+        "featured_product": "",
+        "hero_image": "shopify://shop_images/360E0FA9-B41B-4838-AD27-27E702744FFB.webp"
+      }
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "collection": "all",
+        "products_to_show": 25,
+        "title": "Best Sellers",
+        "heading_size": "h2",
+        "description": "",
+        "show_description": false,
+        "description_style": "body",
+        "columns_desktop": 4,
+        "enable_desktop_slider": false,
+        "full_width": false,
+        "show_view_all": true,
+        "view_all_style": "solid",
+        "color_scheme": "scheme-1",
+        "image_ratio": "adapt",
+        "image_shape": "default",
+        "show_secondary_image": true,
+        "show_vendor": false,
+        "show_rating": false,
+        "quick_add": "none",
+        "columns_mobile": "2",
+        "swipe_on_mobile": false,
+        "padding_top": 44,
+        "padding_bottom": 36
+      }
+    },
+    "custom_trust_badges": {
+      "type": "custom-trust-badges",
+      "blocks": {
+        "badge_1": {
+          "type": "badge",
+          "settings": {
+            "icon": "verified",
+            "title": "HPLC VERIFIED",
+            "description": "Every compound batch undergoes third-party HPLC testing to ensure strict quality control."
+          }
+        },
+        "badge_2": {
+          "type": "badge",
+          "settings": {
+            "icon": "lab",
+            "title": "LAB TESTED PURITY",
+            "description": "Minimum purity levels of 99% guaranteed on our precision research peptides."
+          }
+        },
+        "badge_3": {
+          "type": "badge",
+          "settings": {
+            "icon": "shield",
+            "title": "SECURE COLD CHAIN",
+            "description": "Maintained under temperature-controlled storage to protect product efficacy."
+          }
+        },
+        "badge_4": {
+          "type": "badge",
+          "settings": {
+            "icon": "shipping",
+            "title": "FAST UAE SHIPPING",
+            "description": "Dispatched immediately via secure local couriers directly to your research facility."
+          }
+        }
+      },
+      "block_order": ["badge_1", "badge_2", "badge_3", "badge_4"],
+      "settings": {}
+    },
+
+    "custom_categories": {
+      "type": "custom-categories",
+      "settings": {
+        "title_1": "Rapid Recovery Peptides",
+        "desc_1": "Formulated to accelerate cellular rejuvenation and repair.",
+        "link_1": "",
+        "title_2": "Research Oils",
+        "desc_2": "Premium carrier solutions for research environments.",
+        "link_2": "",
+        "title_3": "Certified Research Oils",
+        "desc_3": "Lab-verified and fully trace-analyzed research liquids.",
+        "link_3": "",
+        "title_4": "SARM & Modulators",
+        "desc_4": "Selective receptor modulators for target discovery.",
+        "link_4": ""
+      }
+    }
+  },
+  "order": [
+    "custom_hero",
+    "featured_collection",
+    "custom_trust_badges",
+    "custom_categories"
+  ]
+}

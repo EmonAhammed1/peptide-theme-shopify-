@@ -1,0 +1,217 @@
+{% comment %}
+  Pixel-Perfect Custom Product Card with Full Image Fill & Clean HTML Entities
+{% endcomment %}
+{%- if card_product and card_product != empty -%}
+  {%- liquid
+    assign card_img_url = nil
+    if card_product.featured_media.preview_image != blank
+      assign card_img_url = card_product.featured_media.preview_image | img_url: '600x600'
+    elsif card_product.featured_media != blank
+      assign card_img_url = card_product.featured_media | img_url: '600x600'
+    elsif card_product.featured_image != blank
+      assign card_img_url = card_product.featured_image | img_url: '600x600'
+    elsif card_product.images.size > 0
+      assign card_img_url = card_product.images.first | img_url: '600x600'
+    endif
+
+    if card_img_url != blank
+      unless card_img_url contains 'http'
+        assign card_img_url = 'https:' | append: card_img_url
+      endunless
+    endif
+
+    # Generate Top Left Code (e.g., BPC-5, GHK-100, TA1-5)
+    assign top_code = ''
+    for tag in card_product.tags
+      if tag contains '-' or tag contains 'MG' or tag contains 'mg'
+        assign top_code = tag | upcase
+        break
+      endif
+    endfor
+    if top_code == blank
+      assign handle_parts = card_product.handle | split: '-'
+      assign top_code = handle_parts[0] | upcase | append: '-5'
+    endif
+
+    # Format COA Serial (e.g., COA-BPC-2025-0320)
+    assign short_handle = card_product.handle | slice: 0, 3 | upcase
+    assign coa_code = 'COA-' | append: short_handle | append: '-2025-0320'
+
+    # Single Line AED Price Formatting
+    if card_product.price_varies
+      assign min_p = card_product.price_min | money_without_currency | remove: '.00'
+      assign max_p = card_product.price_max | money_without_currency | remove: '.00'
+      assign formatted_price = 'AED ' | append: min_p | append: ' – AED ' | append: max_p
+    else
+      assign p = card_product.price | money_without_currency | remove: '.00'
+      assign formatted_price = 'AED ' | append: p
+    endif
+
+    # Clean description text and HTML entities
+    assign desc_text = card_product.description | strip_html | replace: '&middot;', '•' | replace: '&nbsp;', ' ' | replace: '&amp;', '&' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&lt;p&gt;', '' | replace: '&lt;/p&gt;', '' | replace: '&lt;br&gt;', '' | replace: '<p>', '' | replace: '</p>', '' | replace: '<br>', '' | strip
+    if desc_text == blank
+      assign desc_text = 'Research grade peptide compound formulated for laboratory synthesis and scientific evaluation.'
+    endif
+  -%}
+
+  <div class="pixel-peptide-card" style="position: relative; background: #0a0d14; border: 1px solid #161b26; border-radius: 10px; overflow: hidden; display: flex; flex-direction: column; height: 100%; box-shadow: 0 4px 15px rgba(0,0,0,0.5); transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;">
+    
+    <!-- Top Header Bar inside Card -->
+    <div class="card-top-header" style="padding: 12px 16px; background: #080a0f; border-bottom: 1px solid rgba(255,255,255,0.05); display: flex; justify-content: space-between; align-items: center; z-index: 5;">
+      <span class="card-tag" style="font-family: var(--font-mono-family); font-size: 12px; font-weight: 700; color: #3cd6c4; text-transform: uppercase; letter-spacing: 0.05em;">
+        {{ top_code }}
+      </span>
+
+      {%- if card_product.available -%}
+        <span class="card-stock" style="font-family: var(--font-mono-family); font-size: 11px; font-weight: 700; color: #3cd6c4; text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 6px;">
+          <span style="width: 5px; height: 5px; background-color: #3cd6c4; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px #3cd6c4;"></span>
+          IN STOCK
+        </span>
+      {%- else -%}
+        <span class="card-stock" style="font-family: var(--font-mono-family); font-size: 11px; font-weight: 700; color: #f43f5e; text-transform: uppercase; letter-spacing: 0.05em; display: inline-flex; align-items: center; gap: 6px;">
+          <span style="width: 5px; height: 5px; background-color: #f43f5e; border-radius: 50%; display: inline-block;"></span>
+          OUT OF STOCK
+        </span>
+      {%- endif -%}
+    </div>
+
+    <!-- Product Image Box (100% Full Edge-to-Edge Fill) -->
+    <a href="{{ card_product.url }}" style="display: block; position: relative; width: 100%; aspect-ratio: 1 / 1; background: #080b10; overflow: hidden; text-decoration: none;">
+      {%- if card_img_url != blank -%}
+        <img
+          src="{{ card_img_url }}"
+          alt="{{ card_product.title | escape }}"
+          loading="eager"
+          style="width: 100%; height: 100%; object-fit: contain; padding: 10px; box-sizing: border-box; display: block; transition: transform 0.3s ease;"
+        >
+      {%- else -%}
+        <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%; height: 100%; gap: 8px; background: radial-gradient(circle at center, rgba(60,214,196,0.06) 0%, #080b10 100%);">
+          <svg width="42" height="42" viewBox="0 0 24 24" fill="none" stroke="#3cd6c4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.8;">
+            <path d="M10 2v6.5L4 18.5A2 2 0 0 0 5.7 21h12.6a2 2 0 0 0 1.7-2.5L14 8.5V2" />
+            <line x1="8" y1="2" x2="16" y2="2" />
+            <line x1="9" y1="12" x2="15" y2="12" />
+          </svg>
+          <span style="font-family: var(--font-mono-family); font-size: 9px; color: #8a929e; text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;">PURE PEPTIDE</span>
+        </div>
+      {%- endif -%}
+    </a>
+
+    <!-- Normal Bottom Product Details Area -->
+    <div style="padding: 16px 16px 14px 16px; display: flex; flex-direction: column; flex-grow: 1; justify-content: space-between; background: #0a0d14; border-top: 1px solid rgba(255,255,255,0.04); position: relative;">
+      <div>
+        <!-- Product Title -->
+        <h3 class="card-title" style="font-family: var(--font-heading-family); font-size: 16px; font-weight: 700; color: #ffffff; margin: 0 0 6px 0; line-height: 1.3; letter-spacing: 0.01em;">
+          <a href="{{ card_product.url }}" style="color: #ffffff; text-decoration: none;">
+            {{ card_product.title }}
+          </a>
+        </h3>
+
+        <!-- Short Description Subtitle -->
+        <p class="card-desc" style="font-family: var(--font-body-family); font-size: 12px; line-height: 1.45; color: #6b7280; margin: 0 0 16px 0; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+          {{ desc_text }}
+        </p>
+      </div>
+
+      <!-- Bottom Single-Line Price & COA Code Bar -->
+      <div style="display: flex; align-items: center; justify-content: space-between; flex-wrap: nowrap; gap: 8px; margin-top: auto; padding-top: 12px; border-top: 1px solid #161b26;">
+        <div class="card-price" style="font-family: var(--font-mono-family); font-size: 13.5px; font-weight: 700; color: #3cd6c4; letter-spacing: 0.02em; white-space: nowrap;">
+          {{ formatted_price }}
+        </div>
+
+        <span class="card-coa" style="font-family: var(--font-mono-family); font-size: 9.5px; color: #334155; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap;">
+          {{ coa_code }}
+        </span>
+      </div>
+    </div>
+
+    <!-- Slide-Up Hover Description Panel (Matching Exact Reference UI Screenshot) -->
+    <div class="hover-slide-panel" style="position: absolute; bottom: 0; left: 0; right: 0; background: rgba(10, 13, 20, 0.96); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-top: 1px solid rgba(60, 214, 196, 0.4); padding: 16px; z-index: 20; transform: translateY(102%); opacity: 0; transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.3s ease; box-sizing: border-box;">
+      <div style="font-family: var(--font-mono-family); font-size: 11px; font-weight: 700; color: #3cd6c4; text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px;">
+        {%- if card_product.type != blank -%}
+          {{ card_product.type | upcase }}
+        {%- else -%}
+          PREFILLED KLIK-PEN • 3108.3 DA
+        {%- endif -%}
+      </div>
+
+      <p style="font-family: var(--font-body-family); font-size: 12px; line-height: 1.5; color: #cbd5e1; margin: 0; display: -webkit-box; -webkit-line-clamp: 4; -webkit-box-orient: vertical; overflow: hidden;">
+        {{ desc_text }}
+      </p>
+    </div>
+
+  </div>
+
+  <style>
+    .pixel-peptide-card {
+      transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease !important;
+    }
+    .pixel-peptide-card:hover {
+      border-color: #3cd6c4 !important;
+      box-shadow: 0 0 25px rgba(60, 214, 196, 0.3), 0 8px 30px rgba(0,0,0,0.8) !important;
+      transform: scale(1.02) translateY(-4px) !important;
+    }
+    .pixel-peptide-card:hover .hover-slide-panel {
+      transform: translateY(0) !important;
+      opacity: 1 !important;
+    }
+    .pixel-peptide-card:hover img {
+      transform: scale(1.04) !important;
+    }
+
+    /* Desktop Grid Spacing Override */
+    @media screen and (min-width: 990px) {
+      .grid {
+        column-gap: 28px !important;
+        row-gap: 32px !important;
+      }
+    }
+    /* Mobile Grid Spacing & Responsive Elements */
+    @media screen and (max-width: 989px) {
+      .grid {
+        column-gap: 12px !important;
+        row-gap: 16px !important;
+      }
+    }
+    @media screen prawns and (max-width: 749px) {
+      /* We use standard media selector */
+    }
+    @media screen and (max-width: 749px) {
+      .grid {
+        display: flex !important;
+        flex-direction: column !important;
+        align-items: center !important;
+        row-gap: 28px !important;
+        padding-left: 0 !important;
+        padding-right: 0 !important;
+      }
+      .grid__item {
+        width: 100% !important;
+        max-width: 345px !important;
+        margin: 0 auto !important;
+        list-style: none !important;
+      }
+    }
+    @media screen and (max-width: 550px) {
+      .card-top-header {
+        padding: 12px 16px !important;
+      }
+      .card-tag, .card-stock {
+        font-size: 11px !important;
+      }
+      .card-title {
+        font-size: 15px !important;
+      }
+      .card-desc {
+        font-size: 12px !important;
+        margin-bottom: 12px !important;
+        line-height: 1.45 !important;
+      }
+      .card-price {
+        font-size: 13.5px !important;
+      }
+      .card-coa {
+        font-size: 9.5px !important;
+      }
+    }
+  </style>
+{%- endif -%}

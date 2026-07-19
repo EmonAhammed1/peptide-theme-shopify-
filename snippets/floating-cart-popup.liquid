@@ -1,0 +1,102 @@
+{% comment %}
+  Pixel-Perfect High-Tech Floating Cart Popup matching reference screenshot 1000%
+{% endcomment %}
+
+<div id="FloatingCartPopup" class="floating-cart-popup" style="display: none; position: absolute; top: calc(100% + 12px); right: 1rem; width: 340px; background: rgba(8, 10, 15, 0.98); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); border: 1px solid rgba(60, 214, 196, 0.35); border-radius: 12px; padding: 20px; z-index: 99999; box-shadow: 0 12px 45px rgba(0,0,0,0.95), 0 0 25px rgba(60,214,196,0.25); text-align: left; text-transform: none;">
+  
+  <!-- Top Header Label -->
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+    <span style="font-family: var(--font-mono-family); font-size: 11px; font-weight: 800; color: #3cd6c4; text-transform: uppercase; letter-spacing: 0.08em;">
+      YOUR CART
+    </span>
+    <button type="button" onclick="closeFloatingCartPopup()" style="background: none; border: none; color: #6b7280; cursor: pointer; padding: 0;">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <line x1="18" y1="6" x2="6" y2="18"></line>
+        <line x1="6" y1="6" x2="18" y2="18"></line>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Cart Items List Container -->
+  <div id="FloatingCartItemsList" style="max-height: 240px; overflow-y: auto; margin-bottom: 16px; padding-right: 4px;">
+    {%- for item in cart.items -%}
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">
+        <div>
+          <div style="font-family: var(--font-heading-family); font-size: 13px; font-weight: 700; color: #ffffff;">
+            {{ item.product.title }}
+          </div>
+          <div style="font-family: var(--font-mono-family); font-size: 10.5px; color: #6b7280; margin-top: 2px;">
+            {{ item.variant.title }} × {{ item.quantity }}
+          </div>
+        </div>
+        <div style="font-family: var(--font-mono-family); font-size: 12px; font-weight: 700; color: #3cd6c4;">
+          AED {{ item.final_line_price | money_without_currency | remove: '.00' }}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+
+  <!-- Total Summary Row -->
+  <div style="display: flex; justify-content: space-between; align-items: center; padding-top: 12px; border-top: 1px solid rgba(255,255,255,0.1); margin-bottom: 18px;">
+    <span id="FloatingCartItemCount" style="font-family: var(--font-mono-family); font-size: 11px; color: #94a3b8;">
+      {{ cart.item_count }} items
+    </span>
+    <span id="FloatingCartTotal" style="font-family: var(--font-mono-family); font-size: 14px; font-weight: 800; color: #ffffff;">
+      AED {{ cart.total_price | money_without_currency | remove: '.00' }}
+    </span>
+  </div>
+
+  <!-- VIEW CART Main Action Button -->
+  <a href="{{ routes.cart_url }}" style="display: block; width: 100%; text-align: center; font-family: var(--font-mono-family); font-size: 11px; font-weight: 800; color: #080b10; background: #3cd6c4; border: none; padding: 12px 0; border-radius: 6px; text-transform: uppercase; text-decoration: none; letter-spacing: 0.06em; box-shadow: 0 0 15px rgba(60,214,196,0.35); transition: all 0.2s ease; box-sizing: border-box; margin-bottom: 12px;">
+    VIEW CART
+  </a>
+
+  <!-- CONTINUE SHOPPING Link -->
+  <button type="button" onclick="closeFloatingCartPopup()" style="display: block; width: 100%; text-align: center; background: none; border: none; font-family: var(--font-mono-family); font-size: 10px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; cursor: pointer;">
+    CONTINUE SHOPPING
+  </button>
+</div>
+
+<style>
+  @media screen and (max-width: 749px) {
+    #FloatingCartPopup.floating-cart-popup {
+      position: fixed !important;
+      top: 50% !important;
+      left: 50% !important;
+      transform: translate(-50%, -50%) !important;
+      right: auto !important;
+      width: 90% !important;
+      max-width: 340px !important;
+      box-sizing: border-box !important;
+      box-shadow: 0 10px 40px rgba(0,0,0,0.9), 0 0 30px rgba(60,214,196,0.3) !important;
+    }
+  }
+</style>
+
+<script>
+  function openFloatingCartPopup() {
+    var popup = document.getElementById('FloatingCartPopup');
+    if (popup) {
+      popup.style.display = 'block';
+      popup.style.opacity = '1';
+    }
+  }
+
+  function closeFloatingCartPopup() {
+    var popup = document.getElementById('FloatingCartPopup');
+    if (popup) {
+      popup.style.display = 'none';
+    }
+  }
+
+  function toggleFloatingCartPopup() {
+    var popup = document.getElementById('FloatingCartPopup');
+    if (popup) {
+      if (popup.style.display === 'none' || popup.style.display === '') {
+        openFloatingCartPopup();
+      } else {
+        closeFloatingCartPopup();
+      }
+    }
+  }
+</script>

@@ -1,0 +1,341 @@
+<div class="custom-footer-wrapper" style="background-color: {{ section.settings.bg_color }}; color: #ffffff; border-top: 1px solid #1f2937; padding: {{ section.settings.padding_top }}px 0 {{ section.settings.padding_bottom }}px 0; font-family: var(--font-body-family);">
+  <div class="page-width">
+    <!-- Top Footer Columns -->
+    <div style="display: grid; grid-template-columns: 1.5fr 1fr 1fr 1fr; gap: 40px; margin-bottom: 50px;" class="footer-grid-container">
+      
+      <!-- Brand Info Column -->
+      <div>
+        <h2 style="font-family: var(--font-mono-family); font-size: 18px; font-weight: 800; color: {{ section.settings.accent_color }}; text-transform: uppercase; letter-spacing: 0.15em; margin: 0 0 15px 0;">
+          {{ shop.name | uppercase }}
+        </h2>
+        <p style="font-size: 13px; line-height: 1.6; color: #8a929e; margin-bottom: 24px; max-width: 320px;">
+          {{ section.settings.brand_description }}
+        </p>
+        
+        <!-- Payment Badges -->
+        <div style="display: flex; gap: 8px; align-items: center; flex-wrap: wrap;">
+          <span style="font-family: var(--font-mono-family); font-size: 9px; color: #4b5563; font-weight: bold; text-transform: uppercase; letter-spacing: 0.05em; margin-right: 8px;">SECURE PAY:</span>
+          {% if section.settings.show_visa %}<div style="display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono-family); font-size: 9px; font-weight: bold; border: 1px solid #1f2937; padding: 4px 8px; border-radius: 4px; color: #8a929e; background: #000000; text-transform: uppercase;">VISA</div>{% endif %}
+          {% if section.settings.show_mastercard %}<div style="display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono-family); font-size: 9px; font-weight: bold; border: 1px solid #1f2937; padding: 4px 8px; border-radius: 4px; color: #8a929e; background: #000000; text-transform: uppercase;">MC</div>{% endif %}
+          {% if section.settings.show_apple_pay %}<div style="display: inline-flex; align-items: center; justify-content: center; font-family: var(--font-mono-family); font-size: 9px; font-weight: bold; border: 1px solid #1f2937; padding: 4px 8px; border-radius: 4px; color: #8a929e; background: #000000; text-transform: uppercase;">APPLE PAY</div>{% endif %}
+        </div>
+      </div>
+
+      <!-- Links Column 1: Products -->
+      <div>
+        <h3 style="font-family: var(--font-mono-family); font-size: 12px; font-weight: bold; color: #ffffff; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 20px 0;">{{ section.settings.col1_heading }}</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; line-height: 2;">
+          {% if section.settings.col1_link1_label != blank %}<li><a href="{{ section.settings.col1_link1_url }}" class="footer-link-item" style="color: #8a929e; text-decoration: none; transition: color 0.3s ease;">{{ section.settings.col1_link1_label }}</a></li>{% endif %}
+          {% if section.settings.col1_link2_label != blank %}<li><a href="{{ section.settings.col1_link2_url }}" class="footer-link-item" style="color: #8a929e; text-decoration: none; transition: color 0.3s ease;">{{ section.settings.col1_link2_label }}</a></li>{% endif %}
+          {% if section.settings.col1_link3_label != blank %}<li><a href="{{ section.settings.col1_link3_url }}" class="footer-link-item" style="color: #8a929e; text-decoration: none; transition: color 0.3s ease;">{{ section.settings.col1_link3_label }}</a></li>{% endif %}
+          {% if section.settings.col1_link4_label != blank %}<li><a href="{{ section.settings.col1_link4_url }}" class="footer-link-item" style="color: #8a929e; text-decoration: none; transition: color 0.3s ease;">{{ section.settings.col1_link4_label }}</a></li>{% endif %}
+        </ul>
+      </div>
+
+      <!-- Links Column 2: Resources -->
+      <div>
+        <h3 style="font-family: var(--font-mono-family); font-size: 12px; font-weight: bold; color: #ffffff; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 20px 0;">{{ section.settings.col2_heading }}</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; line-height: 2;">
+          {% if section.settings.col2_link1_label != blank %}<li><a href="{{ section.settings.col2_link1_url }}" class="footer-link-item" style="color: #8a929e; text-decoration: none; transition: color 0.3s ease;">{{ section.settings.col2_link1_label }}</a></li>{% endif %}
+          {% if section.settings.col2_link2_label != blank %}<li><a href="{{ section.settings.col2_link2_url }}" class="footer-link-item" style="color: #8a929e; text-decoration: none; transition: color 0.3s ease;">{{ section.settings.col2_link2_label }}</a></li>{% endif %}
+          {% if section.settings.col2_link3_label != blank %}<li><a href="{{ section.settings.col2_link3_url }}" class="footer-link-item" style="color: #8a929e; text-decoration: none; transition: color 0.3s ease;">{{ section.settings.col2_link3_label }}</a></li>{% endif %}
+        </ul>
+      </div>
+
+      <!-- Links Column 3: Legal -->
+      <div>
+        <h3 style="font-family: var(--font-mono-family); font-size: 12px; font-weight: bold; color: #ffffff; text-transform: uppercase; letter-spacing: 0.1em; margin: 0 0 20px 0;">{{ section.settings.col3_heading }}</h3>
+        <ul style="list-style: none; padding: 0; margin: 0; font-size: 13px; line-height: 2;">
+          {% if section.settings.col3_link1_label != blank %}<li><a href="{{ section.settings.col3_link1_url }}" class="footer-link-item" style="color: #8a929e; text-decoration: none; transition: color 0.3s ease;">{{ section.settings.col3_link1_label }}</a></li>{% endif %}
+          {% if section.settings.col3_link2_label != blank %}<li><a href="{{ section.settings.col3_link2_url }}" class="footer-link-item" style="color: #8a929e; text-decoration: none; transition: color 0.3s ease;">{{ section.settings.col3_link2_label }}</a></li>{% endif %}
+          {% if section.settings.col3_link3_label != blank %}<li><a href="{{ section.settings.col3_link3_url }}" class="footer-link-item" style="color: #8a929e; text-decoration: none; transition: color 0.3s ease;">{{ section.settings.col3_link3_label }}</a></li>{% endif %}
+        </ul>
+      </div>
+      
+    </div>
+
+    <!-- Divider -->
+    <div style="border-top: 1px solid #1f2937; margin-bottom: 30px;"></div>
+
+    <!-- Disclaimer & Bottom Info -->
+    <div>
+      {% if section.settings.show_disclaimer %}
+      <div class="footer-research-disclaimer" style="border: 1px solid {{ section.settings.accent_color }}; padding: 20px; border-radius: 6px; background-color: rgba(60, 214, 196, 0.02); margin-bottom: 24px;">
+        <div style="font-family: var(--font-mono-family); font-size: 10px; font-weight: 800; color: {{ section.settings.accent_color }}; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 8px;">
+          [ RESEARCH USE DISCLAIMER ]
+        </div>
+        <p style="font-size: 12px; line-height: 1.6; color: #8a929e; margin: 0;">
+          {{ section.settings.disclaimer_text }}
+        </p>
+      </div>
+      {% endif %}
+      
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px; font-size: 12px; color: #4b5563;">
+        <div>
+          &copy; {{ 'now' | date: '%Y' }} {{ shop.name | uppercase }}. All rights reserved.
+        </div>
+        <div style="font-family: var(--font-mono-family); font-size: 10px; color: #4b5563;">
+          {{ section.settings.bottom_tagline }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+.footer-link-item:hover {
+  color: {{ section.settings.accent_color }} !important;
+}
+@media screen and (max-width: 990px) {
+  .footer-grid-container {
+    grid-template-columns: 1fr 1.2fr !important;
+    gap: 30px !important;
+  }
+}
+@media screen and (max-width: 576px) {
+  .footer-grid-container {
+    grid-template-columns: 1fr !important;
+  }
+}
+@media screen and (max-width: 749px) {
+  .custom-footer-wrapper {
+    padding-bottom: 145px !important;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "t:sections.footer.name",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#080B10"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#3cd6c4"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding Top (px)",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding Bottom (px)",
+      "min": 20,
+      "max": 120,
+      "step": 4,
+      "default": 32
+    },
+    {
+      "type": "header",
+      "content": "Brand Column"
+    },
+    {
+      "type": "textarea",
+      "id": "brand_description",
+      "label": "Brand Description",
+      "default": "Premium research-grade peptides and precision compounds. HPLC-verified. Delivered across the UAE."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_visa",
+      "label": "Show VISA badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_mastercard",
+      "label": "Show Mastercard badge",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_apple_pay",
+      "label": "Show Apple Pay badge",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Column 1 — Products"
+    },
+    {
+      "type": "text",
+      "id": "col1_heading",
+      "label": "Column 1 Heading",
+      "default": "PRODUCTS"
+    },
+    {
+      "type": "text",
+      "id": "col1_link1_label",
+      "label": "Link 1 Label",
+      "default": "Research Peptides"
+    },
+    {
+      "type": "url",
+      "id": "col1_link1_url",
+      "label": "Link 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "col1_link2_label",
+      "label": "Link 2 Label",
+      "default": "Carrier Oils"
+    },
+    {
+      "type": "url",
+      "id": "col1_link2_url",
+      "label": "Link 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "col1_link3_label",
+      "label": "Link 3 Label",
+      "default": "SARMs"
+    },
+    {
+      "type": "url",
+      "id": "col1_link3_url",
+      "label": "Link 3 URL"
+    },
+    {
+      "type": "text",
+      "id": "col1_link4_label",
+      "label": "Link 4 Label",
+      "default": "Best Sellers"
+    },
+    {
+      "type": "url",
+      "id": "col1_link4_url",
+      "label": "Link 4 URL"
+    },
+    {
+      "type": "header",
+      "content": "Column 2 — Resources"
+    },
+    {
+      "type": "text",
+      "id": "col2_heading",
+      "label": "Column 2 Heading",
+      "default": "RESOURCES"
+    },
+    {
+      "type": "text",
+      "id": "col2_link1_label",
+      "label": "Link 1 Label",
+      "default": "Lab Reports"
+    },
+    {
+      "type": "url",
+      "id": "col2_link1_url",
+      "label": "Link 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "col2_link2_label",
+      "label": "Link 2 Label",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "url",
+      "id": "col2_link2_url",
+      "label": "Link 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "col2_link3_label",
+      "label": "Link 3 Label",
+      "default": "Contact Support"
+    },
+    {
+      "type": "url",
+      "id": "col2_link3_url",
+      "label": "Link 3 URL"
+    },
+    {
+      "type": "header",
+      "content": "Column 3 — Legal"
+    },
+    {
+      "type": "text",
+      "id": "col3_heading",
+      "label": "Column 3 Heading",
+      "default": "LEGAL"
+    },
+    {
+      "type": "text",
+      "id": "col3_link1_label",
+      "label": "Link 1 Label",
+      "default": "Privacy Policy"
+    },
+    {
+      "type": "url",
+      "id": "col3_link1_url",
+      "label": "Link 1 URL"
+    },
+    {
+      "type": "text",
+      "id": "col3_link2_label",
+      "label": "Link 2 Label",
+      "default": "Terms of Service"
+    },
+    {
+      "type": "url",
+      "id": "col3_link2_url",
+      "label": "Link 2 URL"
+    },
+    {
+      "type": "text",
+      "id": "col3_link3_label",
+      "label": "Link 3 Label",
+      "default": "Shipping & Refund Policy"
+    },
+    {
+      "type": "url",
+      "id": "col3_link3_url",
+      "label": "Link 3 URL"
+    },
+    {
+      "type": "header",
+      "content": "Bottom Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_disclaimer",
+      "label": "Show Research Use Disclaimer",
+      "default": true
+    },
+    {
+      "type": "textarea",
+      "id": "disclaimer_text",
+      "label": "Disclaimer Text",
+      "default": "All products offered on this website are exclusively intended for laboratory, scientific, and research use. They are not intended for diagnostic or therapeutic use in humans or animals, nor are they approved for clinical administration. By purchasing from this site, you acknowledge and agree to comply with laboratory safety protocols and local research regulations."
+    },
+    {
+      "type": "text",
+      "id": "bottom_tagline",
+      "label": "Bottom Tagline",
+      "default": "HPLC-VERIFIED BATCHES • SECURE COLD SUPPLY"
+    }
+  ]
+}
+{% endschema %}

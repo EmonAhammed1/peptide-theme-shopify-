@@ -1,0 +1,160 @@
+{%- assign max_show = section.settings.products_to_show | plus: 1 -%}
+
+<div class="custom-related-compounds" style="background-color: #080B10; padding: 70px 0 80px; border-top: 1px solid #1a2030;">
+  <div class="page-width">
+
+    <!-- Section Header -->
+    <div style="margin-bottom: 36px;">
+      <div style="font-family: var(--font-mono-family); font-size: 11px; font-weight: 800; color: #3cd6c4; text-transform: uppercase; letter-spacing: 0.18em; margin-bottom: 12px; display: flex; align-items: center; gap: 8px;">
+        <span style="width: 5px; height: 5px; background: #3cd6c4; border-radius: 50%; display: inline-block;"></span>
+        RELATED
+      </div>
+      <h2 style="font-family: var(--font-body-family); font-size: 32px; font-weight: 800; color: #ffffff; margin: 0; letter-spacing: -0.01em;">
+        Related Compounds
+      </h2>
+    </div>
+
+    <!-- Products Grid -->
+    <ul class="related-compounds-grid" role="list" style="list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat({{ section.settings.columns_desktop }}, 1fr); gap: 20px;">
+      {%- assign displayed = 0 -%}
+      {%- for rec in collections.all.products limit: 50 -%}
+        {%- if rec.id == product.id -%}{%- continue -%}{%- endif -%}
+        {%- if displayed >= section.settings.products_to_show -%}{%- break -%}{%- endif -%}
+        {%- assign displayed = displayed | plus: 1 -%}
+
+        {%- assign rec_img = rec.featured_media.preview_image | default: rec.featured_image -%}
+        {%- assign rec_min_price = rec.price_min | money_without_currency | remove: '.00' -%}
+        {%- assign rec_max_price = rec.price_max | money_without_currency | remove: '.00' -%}
+        {%- assign rec_sku = rec.selected_or_first_available_variant.sku | default: '' -%}
+        {%- assign rec_avail = rec.available -%}
+
+        <li>
+          <a href="{{ rec.url }}" style="text-decoration: none; display: block; height: 100%;">
+            <div class="related-compound-card" style="background: #0d1117; border: 1px solid #1f2937; border-radius: 14px; overflow: hidden; height: 100%; display: flex; flex-direction: column; transition: border-color 0.3s ease, box-shadow 0.3s ease; box-sizing: border-box;">
+
+              <!-- Card Top Row: SKU + Stock Status -->
+              <div style="display: flex; align-items: center; justify-content: space-between; padding: 14px 16px 10px; border-bottom: 1px solid #1a2030;">
+                <span style="font-family: var(--font-mono-family); font-size: 10px; font-weight: 700; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em;">
+                  {%- if rec_sku != blank -%}{{ rec_sku }}{%- else -%}{{ rec.handle | upcase | truncate: 12, '' }}{%- endif -%}
+                </span>
+                <span style="font-family: var(--font-mono-family); font-size: 10px; font-weight: 700; {% if rec_avail %}color: #3cd6c4;{% else %}color: #6b7280;{% endif %} display: flex; align-items: center; gap: 5px;">
+                  <span style="width: 6px; height: 6px; border-radius: 50%; {% if rec_avail %}background: #3cd6c4; box-shadow: 0 0 6px rgba(60,214,196,0.6);{% else %}background: #4b5563;{% endif %} display: inline-block;"></span>
+                  {% if rec_avail %}IN STOCK{% else %}OUT OF STOCK{% endif %}
+                </span>
+              </div>
+
+              <!-- Product Image -->
+              <div style="background: #111827; padding: 24px 20px; display: flex; align-items: center; justify-content: center; min-height: 200px; flex-shrink: 0;">
+                {%- if rec_img != blank -%}
+                  <img
+                    src="{{ rec_img | image_url: width: 480 }}"
+                    alt="{{ rec.title | escape }}"
+                    width="240"
+                    height="200"
+                    loading="lazy"
+                    style="max-width: 100%; max-height: 200px; object-fit: contain; transition: transform 0.4s ease;"
+                    class="related-compound-img"
+                  >
+                {%- else -%}
+                  <div style="width: 160px; height: 160px; background: #1f2937; border-radius: 8px; display: flex; align-items: center; justify-content: center;">
+                    <span style="font-family: var(--font-mono-family); font-size: 10px; color: #374151;">NO IMAGE</span>
+                  </div>
+                {%- endif -%}
+              </div>
+
+              <!-- Card Body: Name + Description + Price -->
+              <div style="padding: 18px 18px 20px; display: flex; flex-direction: column; gap: 10px; flex: 1;">
+
+                <!-- Product Name -->
+                <h3 style="font-family: var(--font-body-family); font-size: 15px; font-weight: 800; color: #ffffff; margin: 0; letter-spacing: 0.02em; text-transform: uppercase; line-height: 1.3;">
+                  {{ rec.title }}
+                </h3>
+
+                <!-- Short Description -->
+                {%- if rec.description != blank -%}
+                  <p style="font-size: 12px; color: #6b7280; margin: 0; line-height: 1.55; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;">
+                    {{ rec.description | strip_html | truncate: 100 }}
+                  </p>
+                {%- endif -%}
+
+                <!-- Price Row -->
+                <div style="display: flex; align-items: baseline; justify-content: space-between; margin-top: auto; padding-top: 10px; border-top: 1px solid #1f2937; flex-wrap: wrap; gap: 6px;">
+                  <span style="font-family: var(--font-mono-family); font-size: 15px; font-weight: 800; color: #3cd6c4; line-height: 1.2;">
+                    {%- if rec.price_varies -%}
+                      AED {{ rec_min_price }} – AED {{ rec_max_price }}
+                    {%- else -%}
+                      AED {{ rec_min_price }}
+                    {%- endif -%}
+                  </span>
+                  {%- if rec_sku != blank -%}
+                    <span style="font-family: var(--font-mono-family); font-size: 9px; color: #374151; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;">
+                      COA-{{ rec_sku }}
+                    </span>
+                  {%- endif -%}
+                </div>
+
+              </div>
+            </div>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+
+  </div>
+</div>
+
+<style>
+  .related-compound-card:hover {
+    border-color: rgba(60, 214, 196, 0.35) !important;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(60, 214, 196, 0.08) !important;
+  }
+  .related-compound-card:hover .related-compound-img {
+    transform: scale(1.04);
+  }
+  @media screen and (max-width: 989px) {
+    .related-compounds-grid {
+      grid-template-columns: repeat(2, 1fr) !important;
+    }
+  }
+  @media screen and (max-width: 549px) {
+    .related-compounds-grid {
+      grid-template-columns: 1fr !important;
+    }
+    .custom-related-compounds {
+      padding: 50px 0 60px !important;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Related Compounds",
+  "tag": "section",
+  "class": "section",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 3,
+      "label": "Max products to show"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Columns (Desktop)"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Related Compounds"
+    }
+  ]
+}
+{% endschema %}

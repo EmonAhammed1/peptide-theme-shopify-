@@ -1,0 +1,865 @@
+{% comment %}
+  Custom High-Tech Single Product Page - 100% Fully Dynamic & Interactive
+{% endcomment %}
+
+{%- liquid
+  # Image URL Resolution
+  assign prod_img_url = nil
+  if product.featured_media.preview_image != blank
+    assign prod_img_url = product.featured_media.preview_image | img_url: '1000x1000'
+  elsif product.featured_image != blank
+    assign prod_img_url = product.featured_image | img_url: '1000x1000'
+  endif
+
+  if prod_img_url != blank
+    unless prod_img_url contains 'http'
+      assign prod_img_url = 'https:' | append: prod_img_url
+    endunless
+  endif
+
+  # 1. DYNAMIC PURITY
+  assign purity_val = product.metafields.custom.purity.value | default: product.metafields.custom.purity
+  if purity_val == blank
+    for tag in product.tags
+      if tag contains '%'
+        assign purity_val = tag
+        break
+      endif
+    endfor
+  endif
+  if purity_val == blank
+    assign purity_val = '98.5%'
+  endif
+
+  # 2. DYNAMIC MOLECULAR MASS
+  assign mol_mass_val = product.metafields.custom.molecular_mass.value | default: product.metafields.custom.mol_mass.value | default: product.metafields.custom.mol_mass
+  if mol_mass_val == blank
+    for tag in product.tags
+      if tag contains 'Da' or tag contains 'da' or tag contains 'DA'
+        assign mol_mass_val = tag
+        break
+      endif
+    endfor
+  endif
+  if mol_mass_val == blank
+    assign p_handle = product.handle | downcase
+    if p_handle contains 'bpc'
+      assign mol_mass_val = '1419.5 Da'
+    elsif p_handle contains 'ghk'
+      assign mol_mass_val = '403.93 Da'
+    elsif p_handle contains 'cjc'
+      assign mol_mass_val = '3367.9 Da'
+    elsif p_handle contains 'tb'
+      assign mol_mass_val = '4963.5 Da'
+    elsif p_handle contains 'igf'
+      assign mol_mass_val = '9111.5 Da'
+    elsif p_handle contains 'ipamorelin'
+      assign mol_mass_val = '711.9 Da'
+    else
+      assign mol_mass_val = '1419.5 Da'
+    endif
+  endif
+
+  # 3. DYNAMIC FORM
+  assign form_val = product.metafields.custom.form.value | default: product.metafields.custom.form
+  if form_val == blank
+    assign p_title = product.title | downcase
+    if p_title contains 'nasal'
+      assign form_val = 'Nasal Spray'
+    elsif p_title contains 'vial' or p_title contains 'powder'
+      assign form_val = 'Lyophilized Powder'
+    else
+      assign form_val = 'Prefilled Klik-Pen'
+    endif
+  endif
+
+  # 4. DYNAMIC AMINO ACID SEQUENCE
+  assign sequence_val = product.metafields.custom.sequence.value | default: product.metafields.custom.sequence
+  if sequence_val == blank
+    assign p_handle = product.handle | downcase
+    if p_handle contains 'bpc'
+      assign sequence_val = 'Gly-Glu-Pro-Pro-Pro-Gly-Lys-Pro-Ala-Asp-Asp-Ala-Gly-Leu-Val'
+    elsif p_handle contains 'ghk'
+      assign sequence_val = 'Gly-His-Lys(Cu(II))'
+    elsif p_handle contains 'cjc'
+      assign sequence_val = 'Tyr-D-Ala-Asp-Ala-Ile-Phe-Thr-Gln-Ser-Tyr-Arg-Lys-Val-Leu'
+    elsif p_handle contains 'tb'
+      assign sequence_val = 'Ac-Ser-Asp-Lys-Pro-Asp-Met-Ala-Glu-Ile-Glu-Lys-Phe-Asp-Lys'
+    elsif p_handle contains 'igf'
+      assign sequence_val = '73 Amino Acids Complex Sequence'
+    elsif p_handle contains 'ipamorelin'
+      assign sequence_val = 'Aib-His-D-2Nal-D-Phe-Lys-NH2'
+    else
+      assign sequence_val = 'Ac-Ser-Asp-Lys-Pro-Asp-Met-Ala-Glu-Ile-Glu-Lys-Phe-Asp'
+    endif
+  endif
+
+  # 5. DYNAMIC COA FILE / URL
+  assign coa_url = product.metafields.custom.coa_file.value.url | default: product.metafields.custom.coa_url.value | default: product.metafields.custom.coa_url
+  if coa_url == blank
+    assign coa_url = '/pages/coa-reports'
+  endif
+
+  # Dynamic Category/Brand Code & COA Serial
+  assign top_code = ''
+  for tag in product.tags
+    if tag contains '-' or tag contains 'MG' or tag contains 'mg'
+      assign top_code = tag | upcase
+      break
+    endif
+  endfor
+  if top_code == blank
+    assign handle_parts = product.handle | split: '-'
+    assign top_code = handle_parts[0] | upcase | append: '-100'
+  endif
+
+  assign short_handle = product.handle | slice: 0, 3 | upcase
+  assign coa_code = 'COA-' | append: short_handle | append: '-2025-0323'
+
+  # Description Text Cleaning
+  assign clean_desc = product.description | strip_html | replace: '&middot;', '•' | replace: '&nbsp;', ' ' | replace: '&amp;', '&' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&lt;p&gt;', '' | replace: '&lt;/p&gt;', '' | replace: '&lt;br&gt;', '' | replace: '<p>', '' | replace: '</p>', '' | replace: '<br>', '' | strip
+  if clean_desc == blank
+    assign clean_desc = 'Research demonstrates its ability to stimulate collagen synthesis, promote decorin production, increase angiogenesis, and modulate expression of human genes involved in tissue remodeling and anti-inflammatory responses.'
+  endif
+
+  assign current_variant = product.selected_or_first_available_variant
+
+  # Fetch brand vendor
+  assign brand_vendor = product.vendor | default: 'ALPHAKLIK' | upcase
+-%}
+
+<div class="custom-single-product-container page-width" style="padding-top: 30px; padding-bottom: 95px; color: #ffffff;">
+  <div class="custom-single-product-grid" style="display: grid; grid-template-columns: 1fr 1fr; gap: 40px; align-items: start;">
+    
+    <!-- LEFT: Large Product Media Container -->
+    <div style="position: relative; background: #080a0f; border: 1px solid #161b26; border-radius: 12px; overflow: hidden; aspect-ratio: 1 / 1; display: flex; align-items: center; justify-content: center; box-shadow: 0 8px 30px rgba(0,0,0,0.6);">
+      <!-- Top Left COA Serial Code -->
+      <span style="position: absolute; top: 16px; left: 18px; z-index: 10; font-family: var(--font-mono-family); font-size: 10.5px; color: #334155; text-transform: uppercase; letter-spacing: 0.08em;">
+        {{ coa_code }}
+      </span>
+
+      {%- if prod_img_url != blank -%}
+        <img
+          id="MainProductImage"
+          src="{{ prod_img_url }}"
+          alt="{{ product.title | escape }}"
+          style="width: 100%; height: 100%; object-fit: contain; padding: 24px; box-sizing: border-box; display: block;"
+        >
+      {%- else -%}
+        <div style="display: flex; flex-direction: column; align-items: center; gap: 12px;">
+          <svg width="60" height="60" viewBox="0 0 24 24" fill="none" stroke="#3cd6c4" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" style="opacity: 0.8;">
+            <path d="M10 2v6.5L4 18.5A2 2 0 0 0 5.7 21h12.6a2 2 0 0 0 1.7-2.5L14 8.5V2" />
+            <line x1="8" y1="2" x2="16" y2="2" />
+            <line x1="9" y1="12" x2="15" y2="12" />
+          </svg>
+          <span style="font-family: var(--font-mono-family); font-size: 11px; color: #8a929e; letter-spacing: 0.12em; font-weight: 700;">PURE PEPTIDE</span>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <!-- RIGHT: Product Specs & Ordering -->
+    <div>
+      
+      <!-- Top Tag & Stock Status -->
+      <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
+        <span style="font-family: var(--font-mono-family); font-size: 11px; font-weight: 700; color: #3cd6c4; text-transform: uppercase; letter-spacing: 0.06em;">
+          {{ top_code }}
+        </span>
+        <span id="StockBadgeStatus" style="font-family: var(--font-mono-family); font-size: 10.5px; font-weight: 700; color: {% if current_variant.available %}#3cd6c4{% else %}#f43f5e{% endif %}; text-transform: uppercase; letter-spacing: 0.06em; display: inline-flex; align-items: center; gap: 5px;">
+          <span style="width: 5px; height: 5px; background-color: {% if current_variant.available %}#3cd6c4{% else %}#f43f5e{% endif %}; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px {% if current_variant.available %}#3cd6c4{% else %}#f43f5e{% endif %};"></span>
+          {% if current_variant.available %}IN STOCK{% else %}OUT OF STOCK{% endif %}
+        </span>
+      </div>
+
+      <!-- Main Product Title -->
+      <h1 style="font-family: var(--font-heading-family); font-size: 32px; font-weight: 800; color: #ffffff; margin: 0 0 20px 0; line-height: 1.2; letter-spacing: 0.02em;">
+        {{ product.title }}
+      </h1>
+
+      <!-- 3 High-Tech Metric Cards Grid -->
+      <div class="custom-product-metrics-grid" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; margin-bottom: 24px;">
+        <div style="background: #080a0f; border: 1px solid #161b26; border-radius: 8px; padding: 14px 16px;">
+          <span style="font-family: var(--font-mono-family); font-size: 9.5px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 6px;">PURITY</span>
+          <span style="font-family: var(--font-heading-family); font-size: 18px; font-weight: 700; color: #ffffff;">{{ purity_val }}</span>
+        </div>
+        <div style="background: #080a0f; border: 1px solid #161b26; border-radius: 8px; padding: 14px 16px;">
+          <span style="font-family: var(--font-mono-family); font-size: 9.5px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 6px;">MOL. MASS</span>
+          <span style="font-family: var(--font-heading-family); font-size: 18px; font-weight: 700; color: #ffffff;">{{ mol_mass_val }}</span>
+        </div>
+        <div style="background: #080a0f; border: 1px solid #161b26; border-radius: 8px; padding: 14px 16px;">
+          <span style="font-family: var(--font-mono-family); font-size: 9.5px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 6px;">FORM</span>
+          <span style="font-family: var(--font-heading-family); font-size: 16px; font-weight: 700; color: #ffffff; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; display: block;">{{ form_val }}</span>
+        </div>
+      </div>
+
+      <!-- Dynamic Amino Acid Sequence Box -->
+      <div style="margin-bottom: 24px;">
+        <span style="font-family: var(--font-mono-family); font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 8px;">AMINO ACID SEQUENCE</span>
+        <div style="background: #080a0f; border: 1px solid #161b26; border-radius: 8px; padding: 12px 18px;">
+          <span style="font-family: var(--font-mono-family); font-size: 13px; font-weight: 700; color: #3cd6c4; letter-spacing: 0.04em; word-break: break-all; white-space: normal; display: block;">
+            {{ sequence_val }}
+          </span>
+        </div>
+      </div>
+
+      <!-- Dynamic Description Paragraph -->
+      <p style="font-family: var(--font-body-family); font-size: 13px; line-height: 1.6; color: #94a3b8; margin: 0 0 28px 0;">
+        {{ clean_desc }}
+      </p>
+
+      <!-- Fully Interactive Dynamic Variants Table -->
+      <div style="margin-bottom: 24px;">
+        <span style="font-family: var(--font-mono-family); font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 10px;">AVAILABLE VARIANTS</span>
+        
+        <div style="background: #080a0f; border: 1px solid #161b26; border-radius: 8px; overflow: hidden;">
+          <table style="width: 100%; border-collapse: collapse; text-align: left; font-family: var(--font-mono-family); font-size: 11px;">
+            <thead>
+              <tr style="border-bottom: 1px solid #161b26; color: #6b7280;">
+                <th style="padding: 12px 14px; font-weight: 600;">SKU</th>
+                <th style="padding: 12px 14px; font-weight: 600;">DOSAGE</th>
+                <th style="padding: 12px 14px; font-weight: 600;">PRICE (AED)</th>
+                <th style="padding: 12px 14px; font-weight: 600; text-align: left;">STATUS</th>
+              </tr>
+            </thead>
+            <tbody id="VariantTableBody">
+              {%- for variant in product.variants -%}
+                {%- liquid
+                  assign in_cart_qty = 0
+                  for item in cart.items
+                    if item.variant_id == variant.id
+                      assign in_cart_qty = item.quantity
+                      break
+                    endif
+                  endfor
+                -%}
+                <tr
+                  class="variant-table-row {% if variant.id == current_variant.id %}active-variant-row{% endif %}"
+                  data-variant-id="{{ variant.id }}"
+                  data-variant-price="AED {{ variant.price | money_without_currency | remove: '.00' }}"
+                  data-variant-title="{{ variant.title }}"
+                  data-variant-sku="{{ variant.sku | default: top_code }}"
+                  data-variant-available="{{ variant.available }}"
+                  data-variant-in-cart="{{ in_cart_qty }}"
+                  style="border-bottom: 1px solid rgba(255,255,255,0.05); border-left: 4px solid transparent; color: #ffffff; cursor: pointer; transition: all 0.25s ease; {% if variant.id == current_variant.id %}background: rgba(60, 214, 196, 0.15); border-left: 4px solid #3cd6c4;{% endif %}"
+                  onclick="selectProductVariant('{{ variant.id }}', 'AED {{ variant.price | money_without_currency | remove: '.00' }}', '{{ variant.title }}', {{ variant.available }}, '{{ variant.sku | default: top_code }}', {{ in_cart_qty }}, this)"
+                >
+                  <td style="padding: 14px; color: #8a929e; font-weight: 500;">{{ variant.sku | default: top_code }}</td>
+                  <td style="padding: 14px; color: #ffffff; font-weight: 700;">{{ variant.title }}</td>
+                  <td style="padding: 14px; color: #ffffff; font-weight: 700;">AED {{ variant.price | money_without_currency | remove: '.00' }}</td>
+                  <td style="padding: 14px; text-align: left; color: {% if variant.available %}#3cd6c4{% else %}#f43f5e{% endif %}; font-weight: 700; text-transform: uppercase;">
+                    {% if variant.available %}AVAILABLE{% else %}OUT OF STOCK{% endif %}
+                  </td>
+                </tr>
+              {%- endfor -%}
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Action Buttons Area -->
+      <div style="margin-bottom: 24px;">
+        <!-- Hidden Form to support AJAX validation references -->
+        {%- form 'product', product, id: 'MainInteractiveProductForm', style: 'display: none;' -%}
+          <input type="hidden" name="id" id="SelectedVariantId" value="{{ current_variant.id }}">
+          <button type="submit" name="add" id="AddToCartMainBtn" disabled><span id="AddToCartText">ADD TO CART</span></button>
+        {%- endform -%}
+
+        <!-- Standalone COA Download Button -->
+        <a href="{{ coa_url }}" target="_blank" style="font-family: var(--font-mono-family); font-size: 11.5px; font-weight: 800; color: #ffffff; text-decoration: none; border: 1px solid rgba(255, 255, 255, 0.1); padding: 14px 28px; border-radius: 8px; background: rgba(255,255,255,0.02); display: inline-flex; align-items: center; gap: 8px; transition: all 0.2s ease; letter-spacing: 0.08em;" onmouseover="this.style.background='rgba(255,255,255,0.08)'; this.style.borderColor='rgba(255,255,255,0.2)';" onmouseout="this.style.background='rgba(255,255,255,0.02)'; this.style.borderColor='rgba(255,255,255,0.1)';">
+          DOWNLOAD COA
+        </a>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- Sticky Bottom Bar (Pixel-Perfect Alignment with Reference UI) -->
+<div class="interactive-sticky-bar" style="position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); width: calc(100% - 48px); max-width: 1200px; background: rgba(8, 10, 15, 0.95); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(60, 214, 196, 0.25); border-radius: 14px; padding: 16px 32px; z-index: 999; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 10px 30px rgba(0,0,0,0.6); box-sizing: border-box;">
+  <div class="sticky-info-container" style="display: flex; flex-direction: column; gap: 4px; text-align: left;">
+    <span class="sticky-brand" style="font-family: var(--font-mono-family); font-size: 11px; color: #3cd6c4; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em;">
+      {{ product.title }}
+    </span>
+    <div class="sticky-details-row" style="display: flex; align-items: center; gap: 8px;">
+      <span id="StickyBarPrice" style="font-family: var(--font-mono-family); font-size: 18px; color: #ffffff; font-weight: 800;">
+        AED {{ current_variant.price | money_without_currency | remove: '.00' }}
+      </span>
+      <span id="StickyBarDosage" style="font-family: var(--font-mono-family); font-size: 11px; color: #6b7280;">
+        {{ current_variant.title }}
+      </span>
+      
+      {%- assign initial_in_cart = 0 -%}
+      {%- for item in cart.items -%}
+        {%- if item.variant_id == current_variant.id -%}
+          {%- assign initial_in_cart = item.quantity -%}
+        {%- endif -%}
+      {%- endfor -%}
+      <span id="StickyBarInCartBadge" style="font-family: var(--font-mono-family); font-size: 10px; color: #3cd6c4; font-weight: 700; margin-left: 6px; display: {% if initial_in_cart > 0 %}inline-block{% else %}none{% endif %};">
+        IN CART: <span id="StickyBarInCartCount">{{ initial_in_cart }}</span>
+      </span>
+    </div>
+  </div>
+
+  <div class="sticky-btn-container" style="display: flex; align-items: center; gap: 14px;">
+    <!-- CHOOSE VARIANT & QTY button triggers custom modal -->
+    <button
+      type="button"
+      onclick="openVariantQtyModal()"
+      style="font-family: var(--font-mono-family); font-size: 11px; font-weight: 800; color: #080b10; background: #00ffaa; border: none; padding: 14px 28px; border-radius: 8px; text-transform: uppercase; cursor: pointer; letter-spacing: 0.06em; box-shadow: 0 0 15px rgba(0,255,170,0.3); transition: all 0.25s ease;"
+      onmouseover="this.style.background='#3cd6c4'; this.style.boxShadow='0 0 20px rgba(60,214,196,0.5)';"
+      onmouseout="this.style.background='#00ffaa'; this.style.boxShadow='0 0 15px rgba(0,255,170,0.3)';"
+    >
+      CHOOSE VARIANT & QTY
+    </button>
+  </div>
+</div>
+
+<style>
+  /* Push footer up so the fixed sticky bar doesn't overlap it */
+  .custom-footer-wrapper {
+    padding-bottom: 110px !important;
+  }
+  @media screen and (max-width: 749px) {
+    /* Mobile bar is taller (stacks), so needs more clearance */
+    .custom-footer-wrapper {
+      padding-bottom: 160px !important;
+    }
+    .interactive-sticky-bar {
+      flex-direction: column !important;
+      align-items: stretch !important;
+      gap: 12px !important;
+      padding: 12px 16px !important;
+      bottom: 12px !important;
+      width: calc(100% - 24px) !important;
+      border-radius: 12px !important;
+    }
+    .sticky-info-container {
+      flex-direction: row !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      width: 100% !important;
+    }
+    .sticky-details-row {
+      display: flex !important;
+      align-items: center !important;
+      gap: 6px !important;
+    }
+    .sticky-btn-container {
+      width: 100% !important;
+      display: block !important;
+    }
+    .sticky-btn-container button {
+      width: 100% !important;
+      padding: 12px 0 !important;
+      text-align: center !important;
+    }
+    .custom-single-product-grid {
+      grid-template-columns: 1fr !important;
+      gap: 28px !important;
+    }
+    .custom-product-metrics-grid {
+      grid-template-columns: 1fr !important;
+      gap: 12px !important;
+    }
+    #VariantTableBody td,
+    table th {
+      padding: 10px 8px !important;
+      font-size: 10.5px !important;
+    }
+    .variant-qty-modal-content {
+      max-height: 90vh !important;
+      overflow-y: auto !important;
+      padding: 20px 16px !important;
+    }
+    .modal-selection-grid {
+      grid-template-columns: 1fr !important;
+      gap: 16px !important;
+    }
+    .modal-right-container {
+      min-height: auto !important;
+      padding: 16px !important;
+    }
+  }
+</style>
+
+<!-- DYNAMIC VARIANT & QUANTITY MODAL (100% Matching Reference UI) -->
+<div id="VariantQtyModal" class="variant-qty-modal-overlay" style="display: none; position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; background: rgba(5, 7, 10, 0.85); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); z-index: 10000; align-items: center; justify-content: center; transition: all 0.3s ease;">
+  <div class="variant-qty-modal-content" style="background: #080a0f; border: 1px solid rgba(60, 214, 196, 0.2); border-radius: 20px; width: 780px; max-width: 95%; padding: 32px; box-shadow: 0 25px 60px rgba(0,0,0,0.9), 0 0 35px rgba(60,214,196,0.15); position: relative; box-sizing: border-box; text-align: left;">
+    
+    <!-- Modal Close Button & Title Header -->
+    <div style="display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 2px;">
+      <div>
+        <span style="font-family: var(--font-mono-family); font-size: 10px; font-weight: 800; color: #3cd6c4; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 4px;">
+          CHOOSE VARIANT & QTY
+        </span>
+        <!-- Product Title inside Modal -->
+        <h2 style="font-family: var(--font-heading-family); font-size: 32px; font-weight: 800; color: #ffffff; margin: 0; letter-spacing: 0.01em; line-height: 1.1;">
+          {{ product.title }}
+        </h2>
+      </div>
+      
+      <button type="button" onclick="closeVariantQtyModal()" style="font-family: var(--font-mono-family); font-size: 10px; font-weight: 700; color: #8a929e; background: transparent; border: 1px solid rgba(255,255,255,0.1); padding: 8px 18px; border-radius: 9999px; cursor: pointer; text-transform: uppercase; transition: all 0.25s ease;" onmouseover="this.style.color='#ffffff'; this.style.borderColor='rgba(255,255,255,0.3)'; this.style.background='rgba(255,255,255,0.03)';" onmouseout="this.style.color='#8a929e'; this.style.borderColor='rgba(255,255,255,0.1)'; this.style.background='transparent';">
+        CLOSE
+      </button>
+    </div>
+
+    <div style="height: 1px; background: rgba(255,255,255,0.05); margin: 20px 0;"></div>
+
+    <!-- Two Column Selection Grid -->
+    <div class="modal-selection-grid" style="display: grid; grid-template-columns: 1.4fr 1fr; gap: 28px;">
+      
+      <!-- LEFT: SELECT VARIANT CARDS -->
+      <div>
+        <span style="font-family: var(--font-mono-family); font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 14px;">SELECT VARIANT</span>
+        
+        <div style="display: flex; flex-direction: column; gap: 12px;">
+          {%- for variant in product.variants -%}
+            {%- liquid
+              assign v_in_cart = 0
+              for item in cart.items
+                if item.variant_id == variant.id
+                  assign v_in_cart = item.quantity
+                  break
+                endif
+              endfor
+            -%}
+            <div
+              class="modal-variant-card {% if variant.id == current_variant.id %}modal-variant-card-active{% endif %}"
+              id="ModalCard-{{ variant.id }}"
+              onclick="selectModalVariant('{{ variant.id }}', '{{ variant.title }}', '{{ variant.sku | default: top_code }}', 'AED {{ variant.price | money_without_currency | remove: '.00' }}', {{ variant.available }}, {{ v_in_cart }})"
+              style="background: #0a0d14; border: 2px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 15px 18px; cursor: pointer; transition: all 0.25s ease; display: flex; flex-direction: column; gap: 4px; {% if variant.id == current_variant.id %}border-color: #3cd6c4; background: rgba(60, 214, 196, 0.08); box-shadow: 0 0 20px rgba(60, 214, 196, 0.25), inset 0 0 10px rgba(60, 214, 196, 0.15);{% endif %}"
+            >
+              <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+                <div>
+                  <span style="font-family: var(--font-heading-family); font-size: 15px; font-weight: 700; color: #ffffff; display: block;">{{ variant.title }}</span>
+                  <span style="font-family: var(--font-mono-family); font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.04em; display: block; margin-top: 2px;">{{ variant.sku | default: top_code }}</span>
+                </div>
+                <div style="text-align: right;">
+                  <span style="font-family: var(--font-mono-family); font-size: 15px; font-weight: 800; color: #3cd6c4;">AED {{ variant.price | money_without_currency | remove: '.00' }}</span>
+                  <span style="font-family: var(--font-mono-family); font-size: 9.5px; color: {% if variant.available %}#3cd6c4{% else %}#f43f5e{% endif %}; font-weight: 700; display: block; margin-top: 2px; text-transform: uppercase;">
+                    {% if variant.available %}AVAILABLE{% else %}OUT OF STOCK{% endif %}
+                  </span>
+                </div>
+              </div>
+              <span class="modal-card-in-cart-badge" style="font-family: var(--font-mono-family); font-size: 10px; color: #3cd6c4; font-weight: 700; display: {% if v_in_cart > 0 %}block{% else %}none{% endif %}; margin-top: 4px;">
+                IN CART: <span class="modal-card-in-cart-count">{{ v_in_cart }}</span>
+              </span>
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <!-- RIGHT: QUANTITY SELECTOR & UPDATE BUTTON -->
+      <div class="modal-right-container" style="display: flex; flex-direction: column; justify-content: space-between; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.04); border-radius: 16px; padding: 24px; box-sizing: border-box; min-height: 350px;">
+        <div>
+          <span style="font-family: var(--font-mono-family); font-size: 10px; color: #6b7280; text-transform: uppercase; letter-spacing: 0.08em; display: block; margin-bottom: 14px;">QUANTITY</span>
+          
+          <!-- Quantity Plus Minus Input -->
+          <div style="display: flex; align-items: center; justify-content: space-between; gap: 14px; margin-bottom: 24px; background: #0a0d14; border: 1px solid rgba(255,255,255,0.06); border-radius: 12px; padding: 10px 14px;">
+            <button type="button" onclick="decrementModalQty()" style="width: 36px; height: 36px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 50%; color: #ffffff; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)';" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)';">-</button>
+            <input type="number" id="ModalQuantityInput" value="1" min="1" style="width: 60px; background: transparent; border: none; color: #ffffff; text-align: center; font-family: var(--font-mono-family); font-size: 20px; font-weight: bold; -moz-appearance: textfield;" readonly>
+            <button type="button" onclick="incrementModalQty()" style="width: 36px; height: 36px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.05); border-radius: 50%; color: #ffffff; font-size: 18px; font-weight: bold; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease;" onmouseover="this.style.borderColor='rgba(255,255,255,0.2)';" onmouseout="this.style.borderColor='rgba(255,255,255,0.05)';">+</button>
+          </div>
+
+          <!-- Mapped Variant Summary Details Box -->
+          <div style="background: #0a0d14; border: 1px solid rgba(255,255,255,0.05); border-radius: 12px; padding: 18px; margin-bottom: 24px; min-height: 100px; display: flex; flex-direction: column; justify-content: center;">
+            <span id="ModalSummaryDosage" style="font-family: var(--font-mono-family); font-size: 10px; color: #6b7280; text-transform: uppercase; display: block; margin-bottom: 4px; letter-spacing: 0.05em;">{{ current_variant.title }}</span>
+            <span id="ModalSummaryPrice" style="font-family: var(--font-mono-family); font-size: 26px; font-weight: 800; color: #ffffff; display: block; margin-bottom: 4px; line-height: 1.1;">
+              AED {{ current_variant.price | money_without_currency | remove: '.00' }}
+            </span>
+            <span id="ModalSummaryStatus" style="font-family: var(--font-mono-family); font-size: 10px; color: #3cd6c4; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em;">
+              AVAILABLE
+            </span>
+          </div>
+        </div>
+
+        <!-- Add Selected to Cart AJAX Action Trigger -->
+        <button
+          type="button"
+          id="ModalAddToCartSubmitBtn"
+          onclick="submitModalAddToCart()"
+          style="width: 100%; font-family: var(--font-mono-family); font-size: 11.5px; font-weight: 800; color: #080b10; background: #00ffaa; border: none; padding: 16px 0; border-radius: 10px; text-transform: uppercase; cursor: pointer; letter-spacing: 0.06em; box-shadow: 0 0 20px rgba(0,255,170,0.4); transition: all 0.25s ease;"
+          onmouseover="this.style.background='#3cd6c4'; this.style.boxShadow='0 0 25px rgba(60,214,196,0.6)';"
+          onmouseout="this.style.background='#00ffaa'; this.style.boxShadow='0 0 20px rgba(0,255,170,0.4)';"
+        >
+          ADD SELECTED TO CART
+        </button>
+      </div>
+
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Selected variant state
+  var selectedVariantId = "{{ current_variant.id }}";
+  var selectedVariantAvailable = {{ current_variant.available }};
+
+  function selectProductVariant(variantId, priceFormatted, dosageTitle, isAvailable, sku, inCartQty, rowEl) {
+    // 1. Update Hidden Form Input Values
+    var mainInput = document.getElementById('SelectedVariantId');
+    var stickyInput = document.getElementById('StickySelectedVariantId');
+    if (mainInput) mainInput.value = variantId;
+    if (stickyInput) stickyInput.value = variantId;
+
+    selectedVariantId = variantId;
+    selectedVariantAvailable = isAvailable;
+
+    // 2. Update Table Row Highlight
+    var rows = document.querySelectorAll('.variant-table-row');
+    rows.forEach(function(r) {
+      r.style.background = 'transparent';
+      r.style.borderLeft = '4px solid transparent';
+      r.classList.remove('active-variant-row');
+    });
+    if (rowEl) {
+      rowEl.style.background = 'rgba(60, 214, 196, 0.15)';
+      rowEl.style.borderLeft = '4px solid #3cd6c4';
+      rowEl.classList.add('active-variant-row');
+    }
+
+    // 3. Update Sticky Bottom Bar Info
+    var stickyPrice = document.getElementById('StickyBarPrice');
+    var stickyDosage = document.getElementById('StickyBarDosage');
+    if (stickyPrice) stickyPrice.textContent = priceFormatted;
+    if (stickyDosage) stickyDosage.textContent = dosageTitle;
+
+    // Update in cart badge
+    var inCartBadge = document.getElementById('StickyBarInCartBadge');
+    var inCartCount = document.getElementById('StickyBarInCartCount');
+    if (inCartBadge && inCartCount) {
+      if (inCartQty > 0) {
+        inCartCount.textContent = inCartQty;
+        inCartBadge.style.display = 'inline-block';
+      } else {
+        inCartBadge.style.display = 'none';
+      }
+    }
+
+    // 4. Update Stock Badge and Buttons
+    var stockBadge = document.getElementById('StockBadgeStatus');
+    var mainBtnText = document.getElementById('AddToCartText');
+    var mainBtn = document.getElementById('AddToCartMainBtn');
+    var stickyBtn = document.getElementById('StickyChooseBtn');
+
+    if (isAvailable) {
+      if (stockBadge) {
+        stockBadge.style.color = '#3cd6c4';
+        stockBadge.innerHTML = '<span style="width: 5px; height: 5px; background-color: #3cd6c4; border-radius: 50%; display: inline-block; box-shadow: 0 0 6px #3cd6c4;"></span> IN STOCK';
+      }
+      if (mainBtnText) mainBtnText.textContent = 'ADD TO CART';
+      if (mainBtn) mainBtn.removeAttribute('disabled');
+      if (stickyBtn) stickyBtn.textContent = 'ADD TO CART';
+    } else {
+      if (stockBadge) {
+        stockBadge.style.color = '#f43f5e';
+        stockBadge.innerHTML = '<span style="width: 5px; height: 5px; background-color: #f43f5e; border-radius: 50%; display: inline-block;"></span> OUT OF STOCK';
+      }
+      if (mainBtnText) mainBtnText.textContent = 'OUT OF STOCK';
+      if (mainBtn) mainBtn.setAttribute('disabled', 'disabled');
+      if (stickyBtn) stickyBtn.textContent = 'OUT OF STOCK';
+    }
+  }
+
+  // MODAL LOGIC
+  function openVariantQtyModal() {
+    var modal = document.getElementById('VariantQtyModal');
+    if (modal) {
+      modal.style.display = 'flex';
+      // Sync selected states in modal with currently active variant
+      selectModalVariant(
+        selectedVariantId,
+        document.getElementById('StickyBarDosage').textContent.trim(),
+        '', // SKU lookup handled by script if needed
+        document.getElementById('StickyBarPrice').textContent.trim(),
+        selectedVariantAvailable,
+        parseInt(document.getElementById('StickyBarInCartCount')?.textContent || '0')
+      );
+    }
+  }
+
+  function closeVariantQtyModal() {
+    var modal = document.getElementById('VariantQtyModal');
+    if (modal) {
+      modal.style.display = 'none';
+    }
+  }
+
+  function selectModalVariant(variantId, title, sku, priceFormatted, isAvailable, inCartQty) {
+    selectedVariantId = variantId;
+    selectedVariantAvailable = isAvailable;
+
+    // Update highlights in modal cards
+    var cards = document.querySelectorAll('.modal-variant-card');
+    cards.forEach(function(c) {
+      c.style.borderColor = 'rgba(255,255,255,0.06)';
+      c.style.background = '#0a0d14';
+      c.style.boxShadow = 'none';
+    });
+    var activeCard = document.getElementById('ModalCard-' + variantId);
+    if (activeCard) {
+      activeCard.style.borderColor = '#3cd6c4';
+      activeCard.style.background = 'rgba(60, 214, 196, 0.08)';
+      activeCard.style.boxShadow = '0 0 20px rgba(60, 214, 196, 0.25), inset 0 0 10px rgba(60, 214, 196, 0.15)';
+    }
+
+    // Update modal right column summary details
+    var modalTitle = document.getElementById('ModalSummaryDosage');
+    var modalPrice = document.getElementById('ModalSummaryPrice');
+    var modalStatus = document.getElementById('ModalSummaryStatus');
+    var updateBtn = document.getElementById('ModalAddToCartSubmitBtn');
+
+    if (modalTitle) modalTitle.textContent = title;
+    if (modalPrice) modalPrice.textContent = priceFormatted;
+    
+    if (isAvailable) {
+      if (modalStatus) {
+        modalStatus.textContent = 'AVAILABLE';
+        modalStatus.style.color = '#3cd6c4';
+      }
+      if (updateBtn) {
+        updateBtn.disabled = false;
+        updateBtn.style.opacity = '1';
+        updateBtn.textContent = 'UPDATE CART';
+        updateBtn.style.background = '#00ffaa';
+      }
+    } else {
+      if (modalStatus) {
+        modalStatus.textContent = 'OUT OF STOCK';
+        modalStatus.style.color = '#f43f5e';
+      }
+      if (updateBtn) {
+        updateBtn.disabled = true;
+        updateBtn.style.opacity = '0.5';
+        updateBtn.textContent = 'OUT OF STOCK';
+        updateBtn.style.background = '#6b7280';
+      }
+    }
+
+    // Sync back to main product page select state too
+    var correspondingRow = document.querySelector('.variant-table-row[data-variant-id="' + variantId + '"]');
+    if (correspondingRow) {
+      selectProductVariant(variantId, priceFormatted, title, isAvailable, sku, inCartQty, correspondingRow);
+    }
+  }
+
+  function getNumericPrice(priceStr) {
+    var clean = priceStr.replace(/[^0-9]/g, '');
+    return parseFloat(clean) || 0;
+  }
+
+  function updateModalSummaryPrice() {
+    var qtyInput = document.getElementById('ModalQuantityInput');
+    var modalPrice = document.getElementById('ModalSummaryPrice');
+    var activeCard = document.getElementById('ModalCard-' + selectedVariantId);
+    if (qtyInput && modalPrice && activeCard) {
+      var priceText = activeCard.querySelector('span[style*="color: #3cd6c4"]').textContent;
+      var basePrice = getNumericPrice(priceText);
+      var qty = parseInt(qtyInput.value) || 1;
+      var newPrice = basePrice * qty;
+      modalPrice.textContent = 'AED ' + newPrice.toLocaleString();
+    }
+  }
+
+  function incrementModalQty() {
+    var input = document.getElementById('ModalQuantityInput');
+    if (input) {
+      input.value = parseInt(input.value) + 1;
+      updateModalSummaryPrice();
+    }
+  }
+
+  function decrementModalQty() {
+    var input = document.getElementById('ModalQuantityInput');
+    if (input && parseInt(input.value) > 1) {
+      input.value = parseInt(input.value) - 1;
+      updateModalSummaryPrice();
+    }
+  }
+
+  function submitModalAddToCart() {
+    if (!selectedVariantAvailable) return;
+
+    var qty = parseInt(document.getElementById('ModalQuantityInput').value) || 1;
+    
+    // AJAX Add to Cart
+    var formData = new FormData();
+    formData.append('id', selectedVariantId);
+    formData.append('quantity', qty);
+    formData.append('sections', 'cart-drawer,cart-icon-bubble');
+    formData.append('sections_url', window.location.pathname);
+
+    var updateBtn = document.getElementById('ModalAddToCartSubmitBtn');
+    if (updateBtn) {
+      updateBtn.disabled = true;
+      updateBtn.style.opacity = '0.7';
+    }
+
+    fetch('/cart/add.js', {
+      method: 'POST',
+      headers: {
+        'X-Requested-With': 'XMLHttpRequest'
+      },
+      body: formData
+    })
+    .then(function(res) { return res.json(); })
+    .then(function(state) {
+      closeVariantQtyModal();
+      
+      // Fetch latest cart updates & open floating cart popup
+      fetch('/cart.js')
+      .then(function(res) { return res.json(); })
+      .then(function(cartData) {
+        // Update header counter
+        var headerCartCount = document.querySelector('#cart-icon-bubble span');
+        if (headerCartCount) headerCartCount.textContent = cartData.item_count;
+
+        // Update sticky bottom bar quantity indicator for the added variant
+        var addedVariant = cartData.items.find(function(item) { return item.variant_id.toString() === selectedVariantId.toString(); });
+        if (addedVariant) {
+          var stickyBadge = document.getElementById('StickyBarInCartBadge');
+          var stickyCount = document.getElementById('StickyBarInCartCount');
+          if (stickyBadge && stickyCount) {
+            stickyCount.textContent = addedVariant.quantity;
+            stickyBadge.style.display = 'inline-block';
+          }
+          
+          // Also update the variant lists on main product page
+          var row = document.querySelector('.variant-table-row[data-variant-id="' + selectedVariantId + '"]');
+          if (row) {
+            row.setAttribute('data-variant-in-cart', addedVariant.quantity);
+            var badge = row.querySelector('.modal-card-in-cart-badge');
+            var count = row.querySelector('.modal-card-in-cart-count');
+            if (badge && count) {
+              count.textContent = addedVariant.quantity;
+              badge.style.display = 'block';
+            }
+          }
+          // Update card in modal list
+          var mCard = document.getElementById('ModalCard-' + selectedVariantId);
+          if (mCard) {
+            var mBadge = mCard.querySelector('.modal-card-in-cart-badge');
+            var mCount = mCard.querySelector('.modal-card-in-cart-count');
+            if (mBadge && mCount) {
+              mCount.textContent = addedVariant.quantity;
+              mBadge.style.display = 'block';
+            }
+          }
+        }
+
+        // Render Floating Cart Popup contents
+        var itemsList = document.getElementById('FloatingCartItemsList');
+        var itemCount = document.getElementById('FloatingCartItemCount');
+        var cartTotal = document.getElementById('FloatingCartTotal');
+
+        if (itemCount) itemCount.textContent = cartData.item_count + ' items';
+        if (cartTotal) cartTotal.textContent = 'AED ' + (cartData.total_price / 100).toFixed(0);
+
+        if (itemsList) {
+          var html = '';
+          cartData.items.forEach(function(item) {
+            html += '<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">' +
+              '<div>' +
+                '<div style="font-family: var(--font-heading-family); font-size: 13px; font-weight: 700; color: #ffffff;">' + item.product_title + '</div>' +
+                '<div style="font-family: var(--font-mono-family); font-size: 10.5px; color: #6b7280; margin-top: 2px;">' + (item.variant_title || '') + ' × ' + item.quantity + '</div>' +
+              '</div>' +
+              '<div style="font-family: var(--font-mono-family); font-size: 12px; font-weight: 700; color: #3cd6c4;">AED ' + (item.final_line_price / 100).toFixed(0) + '</div>' +
+            '</div>';
+          });
+          itemsList.innerHTML = html;
+        }
+
+        if (typeof openFloatingCartPopup === 'function') {
+          openFloatingCartPopup();
+        }
+      });
+    })
+    .catch(function(err) {
+      console.error(err);
+    })
+    .finally(function() {
+      if (updateBtn) {
+        updateBtn.disabled = false;
+        updateBtn.style.opacity = '1';
+      }
+    });
+  }
+
+  // Register main page forms handles as fallback
+  document.addEventListener('DOMContentLoaded', function() {
+    function handleAjaxAddToCart(e) {
+      e.preventDefault();
+      var form = this;
+      var formData = new FormData(form);
+      formData.append('sections', 'cart-drawer,cart-icon-bubble');
+      formData.append('sections_url', window.location.pathname);
+
+      fetch('/cart/add.js', {
+        method: 'POST',
+        headers: {
+          'X-Requested-With': 'XMLHttpRequest'
+        },
+        body: formData
+      })
+      .then(function(res) { return res.json(); })
+      .then(function(state) {
+        // Fetch cart data & open floating popup
+        fetch('/cart.js')
+        .then(function(res) { return res.json(); })
+        .then(function(cartData) {
+          var headerCartCount = document.querySelector('#cart-icon-bubble span');
+          if (headerCartCount) headerCartCount.textContent = cartData.item_count;
+
+          var itemsList = document.getElementById('FloatingCartItemsList');
+          var itemCount = document.getElementById('FloatingCartItemCount');
+          var cartTotal = document.getElementById('FloatingCartTotal');
+
+          if (itemCount) itemCount.textContent = cartData.item_count + ' items';
+          if (cartTotal) cartTotal.textContent = 'AED ' + (cartData.total_price / 100).toFixed(0);
+
+          if (itemsList) {
+            var html = '';
+            cartData.items.forEach(function(item) {
+              html += '<div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-bottom: 1px solid rgba(255,255,255,0.05);">' +
+                '<div>' +
+                  '<div style="font-family: var(--font-heading-family); font-size: 13px; font-weight: 700; color: #ffffff;">' + item.product_title + '</div>' +
+                  '<div style="font-family: var(--font-mono-family); font-size: 10.5px; color: #6b7280; margin-top: 2px;">' + (item.variant_title || '') + ' × ' + item.quantity + '</div>' +
+                '</div>' +
+                '<div style="font-family: var(--font-mono-family); font-size: 12px; font-weight: 700; color: #3cd6c4;">AED ' + (item.final_line_price / 100).toFixed(0) + '</div>' +
+              '</div>';
+            });
+            itemsList.innerHTML = html;
+          }
+
+          if (typeof openFloatingCartPopup === 'function') {
+            openFloatingCartPopup();
+          }
+        });
+      });
+    }
+
+    var mainForm = document.getElementById('MainInteractiveProductForm');
+    if (mainForm) mainForm.addEventListener('submit', handleAjaxAddToCart);
+  });
+</script>
+
+<style>
+  .variant-table-row:hover {
+    background: rgba(60,214,196,0.05) !important;
+  }
+  .modal-variant-card:hover {
+    border-color: rgba(60, 214, 196, 0.4) !important;
+    background: rgba(60, 214, 196, 0.02) !important;
+  }
+  .variant-qty-modal-overlay {
+    display: none;
+  }
+  @media screen and (max-width: 989px) {
+    .custom-single-product-container > div {
+      grid-template-columns: 1fr !important;
+      gap: 24px !important;
+    }
+  }
+</style>

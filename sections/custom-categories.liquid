@@ -1,0 +1,148 @@
+<div class="custom-categories-section" style="background-color: #080B10; color: #ffffff; padding: 80px 0; border-bottom: 1px solid #1f2937;">
+  <div class="page-width">
+    
+    <div style="margin-bottom: 50px;">
+      <div style="font-family: var(--font-mono-family); font-size: 11px; font-weight: bold; color: #3cd6c4; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 10px;">
+        EXPLORE DEPARTMENTS
+      </div>
+      <h2 style="font-family: var(--font-body-family); font-size: 36px; font-weight: 800; color: #ffffff; margin: 0;">
+        Shop by Category
+      </h2>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px;">
+      
+      <!-- Category 1 -->
+      <a href="{{ section.settings.link_1 }}" class="category-card-premium" style="text-decoration: none; display: block; background: #0A0D12; border: 1px solid #1f2937; border-radius: 8px; padding: 24px; position: relative; overflow: hidden; transition: all 0.3s ease; height: 160px;">
+        <h3 style="font-family: var(--font-body-family); font-size: 18px; font-weight: 700; color: #ffffff; margin: 0 0 10px 0; line-height: 1.3;">{{ section.settings.title_1 | default: 'Rapid Recovery Peptides' }}</h3>
+        <p style="font-family: var(--font-body-family); font-size: 12px; color: #8a929e; margin: 0; line-height: 1.5;">{{ section.settings.desc_1 | default: 'Formulated to accelerate cellular rejuvenation and repair.' }}</p>
+        <span class="category-arrow" style="position: absolute; bottom: 24px; right: 24px; font-family: var(--font-mono-family); font-size: 14px; color: #8a929e; transition: all 0.3s ease;">→</span>
+      </a>
+
+      <!-- Category 2 -->
+      <a href="{{ section.settings.link_2 }}" class="category-card-premium" style="text-decoration: none; display: block; background: #0A0D12; border: 1px solid #1f2937; border-radius: 8px; padding: 24px; position: relative; overflow: hidden; transition: all 0.3s ease; height: 160px;">
+        <h3 style="font-family: var(--font-body-family); font-size: 18px; font-weight: 700; color: #ffffff; margin: 0 0 10px 0; line-height: 1.3;">{{ section.settings.title_2 | default: 'Research Oils' }}</h3>
+        <p style="font-family: var(--font-body-family); font-size: 12px; color: #8a929e; margin: 0; line-height: 1.5;">{{ section.settings.desc_2 | default: 'Premium carrier solutions for research environments.' }}</p>
+        <span class="category-arrow" style="position: absolute; bottom: 24px; right: 24px; font-family: var(--font-mono-family); font-size: 14px; color: #8a929e; transition: all 0.3s ease;">→</span>
+      </a>
+
+      <!-- Category 3 -->
+      <a href="{{ section.settings.link_3 }}" class="category-card-premium" style="text-decoration: none; display: block; background: #0A0D12; border: 1px solid #1f2937; border-radius: 8px; padding: 24px; position: relative; overflow: hidden; transition: all 0.3s ease; height: 160px;">
+        <h3 style="font-family: var(--font-body-family); font-size: 18px; font-weight: 700; color: #ffffff; margin: 0 0 10px 0; line-height: 1.3;">{{ section.settings.title_3 | default: 'Certified Research Oils' }}</h3>
+        <p style="font-family: var(--font-body-family); font-size: 12px; color: #8a929e; margin: 0; line-height: 1.5;">{{ section.settings.desc_3 | default: 'Lab-verified and fully trace-analyzed research liquids.' }}</p>
+        <span class="category-arrow" style="position: absolute; bottom: 24px; right: 24px; font-family: var(--font-mono-family); font-size: 14px; color: #8a929e; transition: all 0.3s ease;">→</span>
+      </a>
+
+      <!-- Category 4 -->
+      <a href="{{ section.settings.link_4 }}" class="category-card-premium" style="text-decoration: none; display: block; background: #0A0D12; border: 1px solid #1f2937; border-radius: 8px; padding: 24px; position: relative; overflow: hidden; transition: all 0.3s ease; height: 160px;">
+        <h3 style="font-family: var(--font-body-family); font-size: 18px; font-weight: 700; color: #ffffff; margin: 0 0 10px 0; line-height: 1.3;">{{ section.settings.title_4 | default: 'SARM & Modulators' }}</h3>
+        <p style="font-family: var(--font-body-family); font-size: 12px; color: #8a929e; margin: 0; line-height: 1.5;">{{ section.settings.desc_4 | default: 'Selective receptor modulators for target discovery.' }}</p>
+        <span class="category-arrow" style="position: absolute; bottom: 24px; right: 24px; font-family: var(--font-mono-family); font-size: 14px; color: #8a929e; transition: all 0.3s ease;">→</span>
+      </a>
+
+    </div>
+  </div>
+</div>
+
+<style>
+.category-card-premium:hover {
+  border-color: #3cd6c4 !important;
+  background-color: #0d121b !important;
+}
+.category-card-premium:hover .category-arrow {
+  color: #3cd6c4 !important;
+  transform: translateX(5px);
+}
+
+@media screen and (max-width: 990px) {
+  .custom-categories-section div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr 1fr !important;
+  }
+}
+@media screen and (max-width: 576px) {
+  .custom-categories-section div[style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+</style>
+
+{% schema %}
+{
+  "name": "Premium Categories",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title_1",
+      "label": "Title 1",
+      "default": "Rapid Recovery Peptides"
+    },
+    {
+      "type": "text",
+      "id": "desc_1",
+      "label": "Description 1",
+      "default": "Formulated to accelerate cellular rejuvenation and repair."
+    },
+    {
+      "type": "url",
+      "id": "link_1",
+      "label": "Link 1"
+    },
+    {
+      "type": "text",
+      "id": "title_2",
+      "label": "Title 2",
+      "default": "Research Oils"
+    },
+    {
+      "type": "text",
+      "id": "desc_2",
+      "label": "Description 2",
+      "default": "Premium carrier solutions for research environments."
+    },
+    {
+      "type": "url",
+      "id": "link_2",
+      "label": "Link 2"
+    },
+    {
+      "type": "text",
+      "id": "title_3",
+      "label": "Title 3",
+      "default": "Certified Research Oils"
+    },
+    {
+      "type": "text",
+      "id": "desc_3",
+      "label": "Description 3",
+      "default": "Lab-verified and fully trace-analyzed research liquids."
+    },
+    {
+      "type": "url",
+      "id": "link_3",
+      "label": "Link 3"
+    },
+    {
+      "type": "text",
+      "id": "title_4",
+      "label": "Title 4",
+      "default": "SARM & Modulators"
+    },
+    {
+      "type": "text",
+      "id": "desc_4",
+      "label": "Description 4",
+      "default": "Selective receptor modulators for target discovery."
+    },
+    {
+      "type": "url",
+      "id": "link_4",
+      "label": "Link 4"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Premium Categories"
+    }
+  ]
+}
+{% endschema %}

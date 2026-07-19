@@ -1,0 +1,149 @@
+<div class="custom-marquee-bar" style="background-color: #3CD6C4; color: #000000; overflow: hidden; white-space: nowrap; padding: 12px 0; font-family: var(--font-mono-family); font-size: 11px; font-weight: 800; text-transform: uppercase; border-bottom: 1px solid #1f2937; letter-spacing: 0.1em; position: relative; z-index: 10; display: flex; width: 100%;">
+  <div class="custom-marquee-track">
+    <span class="marquee-item">• RESEARCH USE ONLY</span>
+    <span class="marquee-item">• 21+ AGE VERIFICATION REQUIRED</span>
+    <span class="marquee-item">• ADULTS OVER 21 ONLY</span>
+    <span class="marquee-item">• 100% PURITY LAB TESTED</span>
+    <span class="marquee-item">• SECURE PAYMENTS</span>
+    <span class="marquee-item">• GLOBAL DISPATCH</span>
+    <span class="marquee-item">• RESEARCH USE ONLY</span>
+    <span class="marquee-item">• 21+ AGE VERIFICATION REQUIRED</span>
+    <span class="marquee-item">• ADULTS OVER 21 ONLY</span>
+    <span class="marquee-item">• 100% PURITY LAB TESTED</span>
+    <span class="marquee-item">• SECURE PAYMENTS</span>
+    <span class="marquee-item">• GLOBAL DISPATCH</span>
+  </div>
+  <div class="custom-marquee-track">
+    <span class="marquee-item">• RESEARCH USE ONLY</span>
+    <span class="marquee-item">• 21+ AGE VERIFICATION REQUIRED</span>
+    <span class="marquee-item">• ADULTS OVER 21 ONLY</span>
+    <span class="marquee-item">• 100% PURITY LAB TESTED</span>
+    <span class="marquee-item">• SECURE PAYMENTS</span>
+    <span class="marquee-item">• GLOBAL DISPATCH</span>
+    <span class="marquee-item">• RESEARCH USE ONLY</span>
+    <span class="marquee-item">• 21+ AGE VERIFICATION REQUIRED</span>
+    <span class="marquee-item">• ADULTS OVER 21 ONLY</span>
+    <span class="marquee-item">• 100% PURITY LAB TESTED</span>
+    <span class="marquee-item">• SECURE PAYMENTS</span>
+    <span class="marquee-item">• GLOBAL DISPATCH</span>
+  </div>
+</div>
+
+<style>
+.custom-marquee-track {
+  display: inline-block;
+  white-space: nowrap;
+  animation: marquee-slide 32s linear infinite;
+  flex-shrink: 0;
+}
+.custom-marquee-track:hover {
+  animation-play-state: paused;
+}
+.marquee-item {
+  padding-right: 3.5rem;
+  display: inline-block;
+}
+@keyframes marquee-slide {
+  0% { transform: translate3d(0, 0, 0); }
+  100% { transform: translate3d(-50%, 0, 0); }
+}
+</style>
+
+{% schema %}
+{
+  "name": "t:sections.announcement-bar.name",
+  "max_blocks": 12,
+  "class": "announcement-bar-section",
+  "enabled_on": {
+    "groups": ["header"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "auto_rotate",
+      "label": "t:sections.announcement-bar.settings.auto_rotate.label",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "change_slides_speed",
+      "min": 3,
+      "max": 10,
+      "step": 1,
+      "unit": "s",
+      "label": "t:sections.announcement-bar.settings.change_slides_speed.label",
+      "default": 5
+    },    
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:sections.all.colors.label",
+      "default": "scheme-4"
+    },  
+    {
+      "type": "checkbox",
+      "id": "show_line_separator",
+      "default": true,
+      "label": "t:sections.header.settings.show_line_separator.label"
+    },
+    {
+      "type": "header",
+      "content": "t:sections.announcement-bar.settings.heading_utilities.content"
+    },
+    {
+      "type": "paragraph",
+      "content": "t:sections.announcement-bar.settings.paragraph.content"
+    },             
+    {
+      "type": "checkbox",
+      "id": "show_social",
+      "default": false,
+      "label": "t:sections.announcement-bar.settings.show_social.label",
+      "info": "t:sections.announcement-bar.settings.show_social.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": false,
+      "label": "t:sections.announcement-bar.settings.enable_country_selector.label",
+      "info": "t:sections.announcement-bar.settings.enable_country_selector.info"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "default": false,
+      "label": "t:sections.announcement-bar.settings.enable_language_selector.label",
+      "info": "t:sections.announcement-bar.settings.enable_language_selector.info"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "announcement",
+      "name": "t:sections.announcement-bar.blocks.announcement.name",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "t:sections.announcement-bar.blocks.announcement.settings.text.default",
+          "label": "t:sections.announcement-bar.blocks.announcement.settings.text.label"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "t:sections.announcement-bar.blocks.announcement.settings.link.label"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "t:sections.announcement-bar.presets.name",
+      "blocks": [
+        {
+          "type": "announcement"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
