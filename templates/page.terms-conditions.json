@@ -1,0 +1,60 @@
+{
+  "sections": {
+    "main": {
+      "type": "custom-agreement-docs",
+      "blocks": {
+        "shipping": {
+          "type": "document",
+          "settings": {
+            "title": "Shipping Policy",
+            "last_updated": "July 18, 2026",
+            "content": "<h3>1. Delivery Coverage</h3><p>Odyssey Peptide delivers to all Emirates within the United Arab Emirates, including Abu Dhabi, Dubai, Sharjah, Ajman, Umm Al Quwain, Ras Al Khaimah, and Fujairah.</p><h3>2. Order Processing</h3><p>Orders are processed during normal business days. Processing and dispatch times may vary depending on order volume, product availability, and public holidays.</p><h3>3. Packaging</h3><p>All orders are shipped in discreet, unbranded packaging without external product descriptions. Packaging is designed to help maintain product integrity throughout transportation.</p><h3>4. Shipping Fees</h3><p>A standard delivery fee of AED 25 applies to all orders. Promotional offers, including free shipping on qualifying orders, may be available and will be displayed during checkout.</p><h3>5. Order Tracking</h3><p>Once your order has been dispatched, you will receive a WhatsApp notification containing your shipment details. You may also monitor your order status through your account dashboard.</p><h3>6. Temperature-Controlled Handling</h3><p>Products requiring controlled storage conditions are packed using appropriate insulated materials to help preserve product stability during transit.</p><h3>7. Failed Deliveries</h3><p>If delivery cannot be completed due to an incorrect address, recipient unavailability, or other delivery-related issues, we will attempt to contact you using the details provided at checkout. Additional delivery charges may apply for re-delivery attempts.</p>"
+          }
+        },
+        "returns": {
+          "type": "document",
+          "settings": {
+            "title": "Returns & Refund Policy",
+            "last_updated": "July 18, 2026",
+            "content": "<h3>1. Returns</h3><p>To help maintain product integrity and quality, Odyssey Peptide does not accept returns or exchanges once an order has been dispatched.</p><h3>2. Damaged or Incorrect Orders</h3><p>If you receive an incorrect or damaged item, please notify Odyssey Peptide within 48 hours of delivery and provide your order number together with clear photographs of the product and packaging. Once verified, we will arrange a replacement or issue a full refund at no additional cost.</p><h3>3. Order Cancellations</h3><p>Orders may be cancelled free of charge before dispatch. Once an order has been shipped, cancellations are no longer possible.</p><h3>4. Refunds</h3><p>Approved refunds will be processed to the original payment method within 5–10 business days, depending on your payment provider. Delivery charges are non-refundable unless the refund results from our error.</p><h3>5. Contact Us</h3><p>For any questions regarding your order, please contact Odyssey Peptide Customer Support through WhatsApp or our Contact page. We aim to respond within one business day.</p>"
+          }
+        },
+        "terms": {
+          "type": "document",
+          "settings": {
+            "title": "Terms & Conditions",
+            "last_updated": "July 18, 2026",
+            "content": "<h3>1. Research Use</h3><p>Products supplied by Odyssey Peptide are intended solely for laboratory research purposes and are not intended for human or veterinary therapeutic, diagnostic, or clinical use. Customers are responsible for ensuring that products are used in accordance with all applicable laws, regulations, and institutional policies.</p><p>Odyssey Peptide accepts no responsibility for any use of its products that is inconsistent with these Terms or applicable law.</p><h3>2. Eligibility</h3><p>By using this website or placing an order, you confirm that you are at least 18 years of age and legally capable of entering into binding agreements.</p><h3>3. Product Information</h3><p>We make reasonable efforts to ensure that all product descriptions and information published on this website are accurate. Specifications, availability, and product information may change without prior notice.</p><h3>4. No Warranty</h3><p>Unless otherwise required by applicable law, all products, services, and website content are provided 'as is' and 'as available' without any express or implied warranties.</p><h3>5. Limitation of Liability</h3><p>To the fullest extent permitted by applicable law, Odyssey Peptide shall not be liable for any indirect, incidental, consequential, special, exemplary, or punitive damages arising from the use of this website or any products supplied through it.</p><h3>6. Indemnification</h3><p>You agree to indemnify and hold harmless Odyssey Peptide, its directors, officers, employees, affiliates, and representatives against any claims, liabilities, costs, or expenses arising from your breach of these Terms or misuse of our products.</p><h3>7. Intellectual Property</h3><p>All website content, including text, graphics, logos, images, branding, and product descriptions, is the property of Odyssey Peptide and may not be copied, reproduced, or distributed without prior written permission.</p><h3>8. Third-Party Links</h3><p>Odyssey Peptide may provide links to third-party websites for convenience only. We are not responsible for their content or privacy practices.</p><h3>9. User Accounts</h3><p>You are responsible for maintaining the confidentiality of your account credentials. Odyssey Peptide reserves the right to suspend or terminate accounts where these Terms have been violated.</p><h3>10. Orders and Availability</h3><p>All orders are subject to acceptance and product availability. We reserve the right to decline or cancel any order where necessary.</p><h3>11. Governing Law</h3><p>These Terms shall be governed by the laws of the United Arab Emirates.</p><h3>12. Dispute Resolution</h3><p>The parties agree to attempt to resolve disputes through good-faith negotiations before commencing formal legal proceedings.</p><h3>13. Termination</h3><p>Odyssey Peptide reserves the right to suspend or terminate access to the website or any user account where these Terms have been breached.</p><h3>14. Changes to These Terms</h3><p>We may update these Terms at any time. Continued use of the website constitutes acceptance of the revised Terms.</p>"
+          }
+        },
+        "privacy": {
+          "type": "document",
+          "settings": {
+            "title": "Privacy Policy",
+            "last_updated": "July 18, 2026",
+            "content": "<h3>1. Introduction</h3><p>Odyssey Peptide ('Odyssey Peptide', 'we', 'our', or 'us') is committed to protecting your privacy and handling your personal information responsibly.</p><h3>2. Information We Collect</h3><ul><li>Personal information</li><li>Order information</li><li>Payment information (processed securely by third-party providers)</li><li>Technical information</li><li>Communications</li></ul><h3>3. How We Use Your Information</h3><p>We use your information to:</p><ul><li>Process orders</li><li>Provide customer support</li><li>Communicate with you</li><li>Improve our services</li><li>Prevent fraud</li><li>Comply with legal obligations</li></ul><h3>4. Legal Basis for Processing</h3><p>We process personal data in accordance with UAE Federal Decree-Law No. 45 of 2021 (PDPL).</p><h3>5. Sharing Your Information</h3><p>Odyssey Peptide does not sell or rent your personal information. Information may be shared with payment processors, delivery providers, IT providers, professional advisers, or government authorities where legally required.</p><h3>6. Data Storage</h3><p>Your information may be stored within or outside the UAE using appropriate security safeguards.</p><h3>7. Data Security</h3><p>We implement reasonable technical and organisational measures to protect your information.</p><h3>8. Your Privacy Rights</h3><p>Where permitted by law, you may request access, correction, deletion, restriction of processing, or withdrawal of consent.</p><h3>9. Data Retention</h3><p>We retain personal information only as long as reasonably necessary.</p><h3>10. Cookies</h3><p>Our website uses cookies to improve functionality and analyse website performance.</p><h3>11. Third-Party Websites</h3><p>Odyssey Peptide is not responsible for the privacy practices of third-party websites.</p><h3>12. Changes to This Privacy Policy</h3><p>We may update this Privacy Policy from time to time.</p><h3>13. Contact Us</h3><p>Please contact Odyssey Peptide Customer Support with any privacy-related enquiries.</p>"
+          }
+        },
+        "disclaimer": {
+          "type": "document",
+          "settings": {
+            "title": "Disclaimer",
+            "last_updated": "July 18, 2026",
+            "content": "<h3>1. Research Use</h3><p>Products supplied by Odyssey Peptide are intended solely for laboratory research purposes. They are not intended for therapeutic, diagnostic, veterinary, or clinical use unless expressly stated otherwise by the manufacturer or required by applicable law.</p><h3>2. No Medical Advice</h3><p>The information provided on this website is for general informational purposes only and should not be interpreted as medical or healthcare advice.</p><h3>3. Customer Responsibility</h3><p>Customers are responsible for ensuring that the purchase, possession, handling, and use of products comply with all applicable laws and regulations.</p><h3>4. Limitation of Responsibility</h3><p>Odyssey Peptide shall not be responsible for any loss, damage, injury, or liability arising from improper handling, storage, use, or modification of any product after delivery, except where liability cannot legally be excluded.</p><h3>5. Third-Party Information</h3><p>References to scientific publications or third-party resources are provided for informational purposes only and do not constitute an endorsement by Odyssey Peptide.</p><h3>6. Regulatory Compliance</h3><p>Customers are solely responsible for ensuring compliance with all applicable local, national, and international laws governing the purchase, importation, exportation, possession, and use of any products.</p><h3>7. Product Information</h3><p>While Odyssey Peptide makes reasonable efforts to ensure product information is accurate, we do not warrant that all information is complete, current, or error-free.</p><h3>8. Changes to This Disclaimer</h3><p>Odyssey Peptide reserves the right to modify this Disclaimer at any time by publishing an updated version on this website.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "shipping",
+        "returns",
+        "terms",
+        "privacy",
+        "disclaimer"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

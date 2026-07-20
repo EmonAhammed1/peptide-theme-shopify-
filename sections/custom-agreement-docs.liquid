@@ -1,0 +1,437 @@
+<div class="legal-docs section-{{ section.id }}-padding" style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }};">
+  <div class="page-width">
+    <!-- Breadcrumbs -->
+    {%- if section.settings.show_breadcrumbs -%}
+      <div class="about-breadcrumbs" style="color: {{ section.settings.desc_color }}; margin-bottom: 40px;">
+        <a href="/" style="color: {{ section.settings.desc_color }}; text-decoration: none;">HOME</a>
+        <span class="about-breadcrumbs__separator">/</span>
+        <span class="about-breadcrumbs__current" style="color: {{ section.settings.accent_color }};">{{ page.title | upcase }}</span>
+      </div>
+    {%- endif -%}
+
+    <div class="legal-docs__container">
+      <!-- Sidebar / Tab list -->
+      <div class="legal-docs__sidebar">
+        <div class="legal-docs__tabs-nav">
+          {%- assign first_block = true -%}
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'document' -%}
+              <button 
+                class="legal-docs__tab-btn{% if first_block %} active{% endif %}" 
+                data-target="doc-{{ block.id }}"
+                style="color: {{ section.settings.desc_color }}; border-color: rgba(255,255,255,0.05);"
+                onclick="switchLegalTab(this)"
+              >
+                <span class="legal-docs__tab-indicator" style="background: {{ section.settings.accent_color }};"></span>
+                {{ block.settings.title | escape }}
+              </button>
+              {%- assign first_block = false -%}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <!-- Content Area -->
+      <div class="legal-docs__content">
+        {%- assign first_content = true -%}
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'document' -%}
+            <div 
+              id="doc-{{ block.id }}" 
+              class="legal-docs__tab-content{% if first_content %} active{% endif %}"
+              {{ block.shopify_attributes }}
+            >
+              <h1 class="legal-docs__title" style="color: {{ section.settings.heading_color }};">
+                {{ block.settings.title | escape }}
+              </h1>
+              {%- if block.settings.last_updated != blank -%}
+                <div class="legal-docs__date" style="color: {{ section.settings.accent_color }};">
+                  LAST UPDATED: {{ block.settings.last_updated | escape }}
+                </div>
+              {%- endif -%}
+              <div class="legal-docs__body rte" style="color: {{ section.settings.desc_color }};">
+                {{ block.settings.content }}
+              </div>
+            </div>
+            {%- assign first_content = false -%}
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .about-breadcrumbs {
+    font-family: var(--font-mono-family), monospace;
+    font-size: 11px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .about-breadcrumbs a:hover {
+    color: {{ section.settings.accent_color }} !important;
+  }
+
+  .about-breadcrumbs__separator {
+    opacity: 0.4;
+  }
+
+  .legal-docs__container {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 40px;
+    align-items: start;
+  }
+
+  @media screen and (min-width: 990px) {
+    .legal-docs__container {
+      grid-template-columns: 280px 1fr;
+      gap: 60px;
+    }
+  }
+
+  /* Sticky sidebar on desktop */
+  @media screen and (min-width: 990px) {
+    .legal-docs__sidebar {
+      position: sticky;
+      top: 120px;
+    }
+  }
+
+  /* Horizontal scrolling on mobile */
+  @media screen and (max-width: 989px) {
+    .legal-docs__tabs-nav {
+      display: flex;
+      overflow-x: auto;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      padding-bottom: 12px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      gap: 20px;
+      scrollbar-width: none; /* Firefox */
+    }
+    .legal-docs__tabs-nav::-webkit-scrollbar {
+      display: none; /* Chrome/Safari */
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .legal-docs__tabs-nav {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+  }
+
+  .legal-docs__tab-btn {
+    background: none;
+    border: none;
+    padding: 12px 16px;
+    font-family: var(--font-body-family), sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+  }
+
+  @media screen and (max-width: 989px) {
+    .legal-docs__tab-btn {
+      white-space: nowrap;
+      padding: 8px 4px;
+      width: auto;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .legal-docs__tab-btn {
+      border-left: 2px solid rgba(255, 255, 255, 0.05);
+    }
+  }
+
+  .legal-docs__tab-indicator {
+    display: none;
+  }
+
+  @media screen and (max-width: 989px) {
+    .legal-docs__tab-btn.active {
+      color: {{ section.settings.accent_color }} !important;
+      border-bottom: 2px solid {{ section.settings.accent_color }} !important;
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .legal-docs__tab-btn.active {
+      color: #ffffff !important;
+      border-left-color: {{ section.settings.accent_color }} !important;
+      background: rgba(255, 255, 255, 0.02);
+      padding-left: 24px;
+    }
+  }
+
+  .legal-docs__tab-content {
+    display: none;
+    opacity: 0;
+  }
+
+  .legal-docs__tab-content.active {
+    display: block;
+    animation: fadeIn 0.4s forwards ease;
+  }
+
+  @keyframes fadeIn {
+    to {
+      opacity: 1;
+    }
+  }
+
+  .legal-docs__title {
+    font-family: var(--font-heading-family), sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    margin: 0 0 8px 0;
+    letter-spacing: -0.02em;
+  }
+
+  @media screen and (min-width: 750px) {
+    .legal-docs__title {
+      font-size: 38px;
+    }
+  }
+
+  .legal-docs__date {
+    font-family: var(--font-mono-family), monospace;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    margin-bottom: 32px;
+  }
+
+  .legal-docs__body {
+    font-size: 15px;
+    line-height: 1.8;
+  }
+
+  .legal-docs__body h2, 
+  .legal-docs__body h3 {
+    color: #ffffff;
+    font-family: var(--font-heading-family), sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+    margin: 32px 0 16px 0;
+  }
+
+  .legal-docs__body p {
+    margin: 0 0 20px 0;
+  }
+
+  .legal-docs__body ul {
+    margin: 0 0 24px 0;
+    padding-left: 20px;
+  }
+
+  .legal-docs__body li {
+    margin-bottom: 8px;
+  }
+
+  .legal-docs__body strong {
+    color: #ffffff;
+  }
+</style>
+
+<script>
+  function switchLegalTab(btn) {
+    var targetId = btn.getAttribute('data-target');
+    
+    // Deactivate all buttons
+    var buttons = document.querySelectorAll('.legal-docs__tab-btn');
+    buttons.forEach(function(b) {
+      b.classList.remove('active');
+    });
+    
+    // Deactivate all contents
+    var contents = document.querySelectorAll('.legal-docs__tab-content');
+    contents.forEach(function(c) {
+      c.classList.remove('active');
+      c.style.display = 'none';
+    });
+    
+    // Activate target
+    btn.classList.add('active');
+    var targetContent = document.getElementById(targetId);
+    if (targetContent) {
+      targetContent.style.display = 'block';
+      setTimeout(function() {
+        targetContent.classList.add('active');
+      }, 10);
+    }
+    
+    // Sync hash in URL
+    var blockTitle = btn.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+    history.replaceState(null, null, '#' + blockTitle);
+  }
+
+  // Handle URL hashes on page load
+  window.addEventListener('DOMContentLoaded', function() {
+    var hash = window.location.hash;
+    if (hash) {
+      var targetSlug = hash.substring(1);
+      var buttons = document.querySelectorAll('.legal-docs__tab-btn');
+      var matchedBtn = null;
+      
+      buttons.forEach(function(btn) {
+        var btnSlug = btn.textContent.trim().toLowerCase().replace(/[^a-z0-9]+/g, '-');
+        if (btnSlug === targetSlug) {
+          matchedBtn = btn;
+        }
+      });
+      
+      if (matchedBtn) {
+        switchLegalTab(matchedBtn);
+        // Scroll slightly above the container for mobile
+        if (window.innerWidth < 990) {
+          var container = document.querySelector('.legal-docs__container');
+          if (container) {
+            container.scrollIntoView({ behavior: 'smooth' });
+          }
+        }
+      }
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Legal Documents Tabs",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_breadcrumbs",
+      "label": "Show Breadcrumbs",
+      "default": true
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#080B10"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Description / Body Color",
+      "default": "#8A929E"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#3CD6C4"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 48
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "document",
+      "name": "Legal Document",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Document Title",
+          "default": "Legal Document"
+        },
+        {
+          "type": "text",
+          "id": "last_updated",
+          "label": "Last Updated",
+          "default": "July 18, 2026"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Content of the document goes here.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Legal Documents Tabs"
+    }
+  ]
+}
+{% endschema %}
