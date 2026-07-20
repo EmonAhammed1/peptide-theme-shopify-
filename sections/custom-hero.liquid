@@ -122,9 +122,14 @@
     }
   }
 
-  .custom-hero-heading em,
-  .custom-hero-heading span.highlight {
+  .custom-hero-heading em {
     font-style: italic;
+    color: {{ section.settings.accent_color }} !important;
+    font-weight: inherit;
+  }
+
+  .custom-hero-heading span.highlight {
+    font-style: normal;
     color: {{ section.settings.accent_color }} !important;
     font-weight: inherit;
   }
