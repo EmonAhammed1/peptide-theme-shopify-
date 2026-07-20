@@ -4083,3 +4083,26 @@ body {
 .header__menu-item:not([aria-current="page"]):hover span {
   color: #3cd6c4 !important;
 }
+
+/* ── Dropdown select menu fixes for dark mode ── */
+select,
+option,
+.select__select,
+.select__select option,
+.facet-filters__sort,
+.facet-filters__sort option,
+.localization-form__select,
+.localization-form__select option {
+  background-color: #0b121b !important;
+  color: #ffffff !important;
+}
+
+/* Focused active select states */
+.select__select:focus,
+.facet-filters__sort:focus {
+  background-color: #0b121b !important;
+  color: #ffffff !important;
+  outline: none !important;
+  box-shadow: 0 0 0 1px #3cd6c4 !important;
+}
+
