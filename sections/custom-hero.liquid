@@ -46,10 +46,10 @@
       <div style="position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, rgba(60, 214, 196, 0.12) 0%, rgba(0,0,0,0) 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;"></div>
       
       <!-- Glassmorphic Card Container -->
-      <div class="hero-glass-card" style="position: relative; z-index: 2; width: 100%; max-width: 380px; background: rgba(10, 13, 18, 0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; {% if section.settings.hero_image == blank %}padding: 16px;{% endif %} overflow: hidden; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1); transition: all 0.5s ease; display: flex; align-items: center; justify-content: center; min-height: 380px; height: 380px; box-sizing: border-box;">
+      <div class="hero-glass-card" style="position: relative; z-index: 2; width: 100%; max-width: 380px; background: rgba(10, 13, 18, 0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 12px; overflow: hidden; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1); transition: all 0.5s ease; display: flex; align-items: center; justify-content: center; min-height: 380px; height: 380px; box-sizing: border-box;">
         {%- if section.settings.hero_image != blank -%}
-          <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center;">
-            <img src="{{ section.settings.hero_image | image_url: width: 600 }}" alt="Hero Image" style="width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease;" class="hero-card-img">
+          <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box;">
+            <img src="{{ section.settings.hero_image | image_url: width: 600 }}" alt="Hero Image" style="width: 100%; height: 100%; object-fit: contain; border-radius: 10px; transition: transform 0.5s ease;" class="hero-card-img">
           </div>
         {%- elsif section.settings.featured_product != blank -%}
           {%- assign prod = all_products[section.settings.featured_product] -%}
