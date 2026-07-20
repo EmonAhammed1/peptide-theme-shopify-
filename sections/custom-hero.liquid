@@ -1,52 +1,67 @@
-<div class="custom-hero-section" style="background-color: #080B10; color: #ffffff; padding: 80px 0; border-bottom: 1px solid #1f2937; overflow: hidden; position: relative;">
-  <div class="page-width" style="display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 60px; align-items: center;">
+<div class="custom-hero-section section-{{ section.id }}-padding" style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }}; border-bottom: 1px solid {{ section.settings.border_color }}; overflow: hidden; position: relative;">
+  <div class="page-width custom-hero-grid">
     
     <!-- Left: Content -->
     <div>
-      <div style="font-family: var(--font-mono-family); font-size: 11px; font-weight: bold; color: #3cd6c4; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 8px;">
-        <span style="width: 6px; height: 6px; background-color: #3cd6c4; border-radius: 50%; display: inline-block;"></span>
-        HPLC VERIFIED & COMPLIANT
-      </div>
+      {%- if section.settings.sublabel != blank -%}
+        <div style="font-family: var(--font-mono-family); font-size: 11px; font-weight: bold; color: {{ section.settings.accent_color }}; text-transform: uppercase; letter-spacing: 0.15em; margin-bottom: 15px; display: inline-flex; align-items: center; gap: 8px;">
+          <span class="pulsing-green-dot" style="background-color: {{ section.settings.accent_color }};"></span>
+          {{ section.settings.sublabel | escape }}
+        </div>
+      {%- endif -%}
       
-      <h1 style="font-family: var(--font-body-family); font-size: 56px; font-weight: 800; line-height: 1.1; margin: 0 0 25px 0; color: #ffffff; letter-spacing: -0.02em;">
-        Research-Grade Peptides.<br>
-        <span style="color: #3cd6c4;">Delivered Across the UAE.</span>
-      </h1>
+      {%- if section.settings.heading != blank -%}
+        <h1 class="custom-hero-heading" style="color: {{ section.settings.heading_color }};">
+          {{ section.settings.heading }}
+        </h1>
+      {%- endif -%}
       
       <!-- Metrics Row -->
-      <div style="display: flex; gap: 15px; margin-bottom: 40px; flex-wrap: wrap;">
-        <div style="flex: 1; min-width: 120px; border: 1px solid #1f2937; padding: 15px; border-radius: 8px; background: rgba(255, 255, 255, 0.02); text-align: left;">
-          <div style="font-family: var(--font-mono-family); font-size: 20px; font-weight: 800; color: #3cd6c4; margin-bottom: 5px;">>99%</div>
-          <div style="font-size: 11px; color: #8a929e; font-family: var(--font-mono-family); text-transform: uppercase;">Purity Rate</div>
-        </div>
-        <div style="flex: 1; min-width: 120px; border: 1px solid #1f2937; padding: 15px; border-radius: 8px; background: rgba(255, 255, 255, 0.02); text-align: left;">
-          <div style="font-family: var(--font-mono-family); font-size: 20px; font-weight: 800; color: #3cd6c4; margin-bottom: 5px;">24h</div>
-          <div style="font-size: 11px; color: #8a929e; font-family: var(--font-mono-family); text-transform: uppercase;">Dispatch</div>
-        </div>
-        <div style="flex: 1; min-width: 120px; border: 1px solid #1f2937; padding: 15px; border-radius: 8px; background: rgba(255, 255, 255, 0.02); text-align: left;">
-          <div style="font-family: var(--font-mono-family); font-size: 20px; font-weight: 800; color: #3cd6c4; margin-bottom: 5px;">UAE-Wide</div>
-          <div style="font-size: 11px; color: #8a929e; font-family: var(--font-mono-family); text-transform: uppercase;">Safe Delivery</div>
-        </div>
+      <div style="display: flex; gap: 15px; margin-bottom: 40px; flex-wrap: wrap;" class="custom-hero-metrics">
+        {%- if section.settings.metric1_value != blank -%}
+          <div class="hero-metric-box" style="border: 1px solid {{ section.settings.border_color }}; background: {{ section.settings.metric_bg }};">
+            <div style="font-family: var(--font-mono-family); font-size: 20px; font-weight: 800; color: {{ section.settings.accent_color }}; margin-bottom: 5px;">{{ section.settings.metric1_value | escape }}</div>
+            <div style="font-size: 11px; color: {{ section.settings.desc_color }}; font-family: var(--font-mono-family); text-transform: uppercase;">{{ section.settings.metric1_label | escape }}</div>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.metric2_value != blank -%}
+          <div class="hero-metric-box" style="border: 1px solid {{ section.settings.border_color }}; background: {{ section.settings.metric_bg }};">
+            <div style="font-family: var(--font-mono-family); font-size: 20px; font-weight: 800; color: {{ section.settings.accent_color }}; margin-bottom: 5px;">{{ section.settings.metric2_value | escape }}</div>
+            <div style="font-size: 11px; color: {{ section.settings.desc_color }}; font-family: var(--font-mono-family); text-transform: uppercase;">{{ section.settings.metric2_label | escape }}</div>
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.metric3_value != blank -%}
+          <div class="hero-metric-box" style="border: 1px solid {{ section.settings.border_color }}; background: {{ section.settings.metric_bg }};">
+            <div style="font-family: var(--font-mono-family); font-size: 20px; font-weight: 800; color: {{ section.settings.accent_color }}; margin-bottom: 5px;">{{ section.settings.metric3_value | escape }}</div>
+            <div style="font-size: 11px; color: {{ section.settings.desc_color }}; font-family: var(--font-mono-family); text-transform: uppercase;">{{ section.settings.metric3_label | escape }}</div>
+          </div>
+        {%- endif -%}
       </div>
       
       <!-- CTA Buttons -->
-      <div style="display: flex; gap: 20px; flex-wrap: wrap;">
-        <a href="{{ section.settings.primary_url | default: '/collections/all' }}" class="hero-btn-primary" style="background-color: #3cd6c4; color: #000000; padding: 16px 36px; border-radius: 6px; font-family: var(--font-mono-family); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; display: inline-block; transition: all 0.3s ease; border: 1px solid #3cd6c4;">
-          {{ section.settings.primary_text | default: 'SHOP NOW' }}
-        </a>
-        <a href="{{ section.settings.secondary_url | default: '/collections/all' }}" class="hero-btn-secondary" style="background-color: transparent; color: #ffffff; padding: 16px 36px; border-radius: 6px; font-family: var(--font-mono-family); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; display: inline-block; transition: all 0.3s ease; border: 1px solid #1f2937;">
-          {{ section.settings.secondary_text | default: 'VIEW COMPOUNDS' }}
-        </a>
+      <div style="display: flex; gap: 20px; flex-wrap: wrap;" class="custom-hero-ctas">
+        {%- if section.settings.primary_text != blank -%}
+          <a href="{{ section.settings.primary_url | default: '/collections/all' }}" class="hero-btn-primary" style="background-color: {{ section.settings.accent_color }}; color: {{ section.settings.btn_text_color }}; padding: 16px 36px; border-radius: 6px; font-family: var(--font-mono-family); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; display: inline-block; transition: all 0.3s ease; border: 1px solid {{ section.settings.accent_color }};">
+            {{ section.settings.primary_text | escape }}
+          </a>
+        {%- endif -%}
+        {%- if section.settings.secondary_text != blank -%}
+          <a href="{{ section.settings.secondary_url | default: '/collections/all' }}" class="hero-btn-secondary" style="background-color: transparent; color: {{ section.settings.text_color }}; padding: 16px 36px; border-radius: 6px; font-family: var(--font-mono-family); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; display: inline-block; transition: all 0.3s ease; border: 1px solid {{ section.settings.border_color }};">
+            {{ section.settings.secondary_text | escape }}
+          </a>
+        {%- endif -%}
       </div>
     </div>
     
     <!-- Right: Featured Product Display Card -->
     <div style="position: relative; display: flex; justify-content: center;">
       <!-- Decorative radial gradient background glow -->
-      <div style="position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, rgba(60, 214, 196, 0.12) 0%, rgba(0,0,0,0) 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;"></div>
+      <div style="position: absolute; width: 300px; height: 300px; background: radial-gradient(circle, rgba({{ section.settings.accent_color | color_to_rgb | replace: 'rgb(', '' | replace: ')', '' }}, 0.12) 0%, rgba(0,0,0,0) 70%); top: 50%; left: 50%; transform: translate(-50%, -50%); z-index: 1;"></div>
       
       <!-- Glassmorphic Card Container -->
-      <div class="hero-glass-card" style="position: relative; z-index: 2; width: 100%; max-width: 380px; background: rgba(10, 13, 18, 0.4); backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 16px; padding: 12px; overflow: hidden; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1); transition: all 0.5s ease; display: flex; align-items: center; justify-content: center; min-height: 380px; height: 380px; box-sizing: border-box;">
+      <div class="hero-glass-card" style="position: relative; z-index: 2; width: 100%; max-width: 380px; background: {{ section.settings.card_bg }}; backdrop-filter: blur(12px); -webkit-backdrop-filter: blur(12px); border: 1px solid {{ section.settings.border_color }}; border-radius: 16px; padding: 12px; overflow: hidden; box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255,255,255,0.1); transition: all 0.5s ease; display: flex; align-items: center; justify-content: center; min-height: 380px; height: 380px; box-sizing: border-box;">
         {%- if section.settings.hero_image != blank -%}
           <div style="width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; box-sizing: border-box;">
             <img src="{{ section.settings.hero_image | image_url: width: 600 }}" alt="Hero Image" style="width: 100%; height: 100%; object-fit: contain; border-radius: 10px; transition: transform 0.5s ease;" class="hero-card-img">
@@ -58,7 +73,7 @@
               <img src="{{ prod.featured_image | image_url: width: 600 }}" alt="{{ prod.title }}" style="max-width: 100%; height: auto; max-height: 340px; object-fit: contain; filter: drop-shadow(0 15px 25px rgba(0,0,0,0.6)); transition: transform 0.5s ease;" class="hero-card-img">
             </a>
           {%- else -%}
-            <div style="color: #4b5563; font-family: var(--font-mono-family); font-size: 11px;">[ PRODUCT HAS NO IMAGE ]</div>
+            <div style="color: {{ section.settings.desc_color }}; font-family: var(--font-mono-family); font-size: 11px;">[ PRODUCT HAS NO IMAGE ]</div>
           {%- endif -%}
         {%- else -%}
           <!-- Default placeholder design if nothing is set -->
@@ -73,57 +88,168 @@
 </div>
 
 <style>
-@keyframes pulse-green {
-  0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(60, 214, 196, 0.7); }
-  70% { transform: scale(1); box-shadow: 0 0 0 6px rgba(60, 214, 196, 0); }
-  100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(60, 214, 196, 0); }
-}
-.pulsing-green-dot {
-  width: 6px;
-  height: 6px;
-  background-color: #3cd6c4;
-  border-radius: 50%;
-  display: inline-block;
-  animation: pulse-green 2s infinite;
-}
-.hero-btn-primary:hover {
-  background-color: transparent !important;
-  color: #3cd6c4 !important;
-}
-.hero-btn-secondary:hover {
-  border-color: #3cd6c4 !important;
-  color: #3cd6c4 !important;
-}
-.hero-glass-card:hover {
-  border-color: rgba(60, 214, 196, 0.3) !important;
-  box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 25px rgba(60, 214, 196, 0.15) !important;
-}
-.hero-glass-card:hover .hero-card-img {
-  transform: translateY(-8px) scale(1.03);
-}
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
 
-@media screen and (max-width: 990px) {
-  .custom-hero-section {
-    padding: 60px 0 !important;
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
   }
-  .custom-hero-section > .page-width {
-    grid-template-columns: 1fr !important;
-    gap: 40px !important;
-    text-align: center !important;
+
+  .custom-hero-grid {
+    display: grid;
+    grid-template-columns: 1.2fr 0.8fr;
+    gap: 60px;
+    align-items: center;
   }
-  .custom-hero-section h1 {
-    font-size: 38px !important;
+
+  .custom-hero-heading {
+    font-family: var(--font-body-family);
+    font-size: 38px;
+    font-weight: 800;
+    line-height: 1.15;
+    margin: 0 0 25px 0;
+    letter-spacing: -0.02em;
   }
-  .custom-hero-section div[style*="display: flex"] {
-    justify-content: center !important;
+
+  @media screen and (min-width: 750px) {
+    .custom-hero-heading {
+      font-size: 56px;
+    }
   }
-}
+
+  .custom-hero-heading em,
+  .custom-hero-heading span.highlight {
+    font-style: italic;
+    color: {{ section.settings.accent_color }} !important;
+    font-weight: inherit;
+  }
+
+  .hero-metric-box {
+    flex: 1;
+    min-width: 120px;
+    padding: 15px;
+    border-radius: 8px;
+    text-align: left;
+  }
+
+  @keyframes pulse-green {
+    0% { transform: scale(0.95); opacity: 0.5; }
+    50% { transform: scale(1.1); opacity: 1; }
+    100% { transform: scale(0.95); opacity: 0.5; }
+  }
+
+  .pulsing-green-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    display: inline-block;
+    animation: pulse-green 2s infinite;
+  }
+
+  .hero-btn-primary:hover {
+    background-color: transparent !important;
+    color: {{ section.settings.accent_color }} !important;
+  }
+
+  .hero-btn-secondary:hover {
+    border-color: {{ section.settings.accent_color }} !important;
+    color: {{ section.settings.accent_color }} !important;
+  }
+
+  .hero-glass-card:hover {
+    border-color: rgba({{ section.settings.accent_color | color_to_rgb | replace: 'rgb(', '' | replace: ')', '' }}, 0.3) !important;
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.6), 0 0 25px rgba({{ section.settings.accent_color | color_to_rgb | replace: 'rgb(', '' | replace: ')', '' }}, 0.15) !important;
+  }
+
+  .hero-glass-card:hover .hero-card-img {
+    transform: translateY(-8px) scale(1.03);
+  }
+
+  @media screen and (max-width: 990px) {
+    .custom-hero-grid {
+      grid-template-columns: 1fr !important;
+      gap: 40px !important;
+      text-align: center !important;
+    }
+    .custom-hero-metrics,
+    .custom-hero-ctas {
+      justify-content: center !important;
+    }
+    .hero-metric-box {
+      text-align: center !important;
+    }
+  }
 </style>
 
 {% schema %}
 {
   "name": "Premium Custom Hero",
   "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "sublabel",
+      "label": "Sub-label",
+      "default": "HPLC VERIFIED & COMPLIANT"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading (HTML permitted)",
+      "default": "Research-Grade Peptides.<br><span class=\"highlight\">Delivered Across the UAE.</span>"
+    },
+    {
+      "type": "header",
+      "content": "Metrics"
+    },
+    {
+      "type": "text",
+      "id": "metric1_value",
+      "label": "Metric 1 Value",
+      "default": ">99%"
+    },
+    {
+      "type": "text",
+      "id": "metric1_label",
+      "label": "Metric 1 Label",
+      "default": "Purity Rate"
+    },
+    {
+      "type": "text",
+      "id": "metric2_value",
+      "label": "Metric 2 Value",
+      "default": "24h"
+    },
+    {
+      "type": "text",
+      "id": "metric2_label",
+      "label": "Metric 2 Label",
+      "default": "Dispatch"
+    },
+    {
+      "type": "text",
+      "id": "metric3_value",
+      "label": "Metric 3 Value",
+      "default": "UAE-Wide"
+    },
+    {
+      "type": "text",
+      "id": "metric3_label",
+      "label": "Metric 3 Label",
+      "default": "Safe Delivery"
+    },
+    {
+      "type": "header",
+      "content": "CTA Buttons"
+    },
     {
       "type": "text",
       "id": "primary_text",
@@ -147,6 +273,10 @@
       "label": "Secondary Button Link"
     },
     {
+      "type": "header",
+      "content": "Media"
+    },
+    {
       "type": "product",
       "id": "featured_product",
       "label": "Featured Card Product"
@@ -155,6 +285,102 @@
       "type": "image_picker",
       "id": "hero_image",
       "label": "Custom Hero Card Image"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#080B10"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Secondary Text Color",
+      "default": "#8A929E"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#3CD6C4"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border Color",
+      "default": "#1F2937"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background Color",
+      "default": "rgba(10, 13, 18, 0.4)"
+    },
+    {
+      "type": "color",
+      "id": "metric_bg",
+      "label": "Metric Box Background",
+      "default": "rgba(255, 255, 255, 0.02)"
+    },
+    {
+      "type": "color",
+      "id": "btn_text_color",
+      "label": "Primary Button Text Color",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 60
     }
   ],
   "presets": [
