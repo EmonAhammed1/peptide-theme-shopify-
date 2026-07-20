@@ -43,12 +43,12 @@
       <!-- CTA Buttons -->
       <div style="display: flex; gap: 20px; flex-wrap: wrap;" class="custom-hero-ctas">
         {%- if section.settings.primary_text != blank -%}
-          <a href="{{ section.settings.primary_url | default: '/collections/all' }}" class="hero-btn-primary" style="background-color: {{ section.settings.accent_color }}; color: {{ section.settings.btn_text_color }}; padding: 16px 36px; border-radius: 6px; font-family: var(--font-mono-family); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; display: inline-block; transition: all 0.3s ease; border: 1px solid {{ section.settings.accent_color }};">
+          <a href="{{ section.settings.primary_url | default: '/collections/all' }}" class="hero-btn-primary" style="background-color: #3cd6c4; color: #000000; padding: 16px 36px; border-radius: 6px; font-family: var(--font-mono-family); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; display: inline-block; transition: all 0.3s ease; border: 1px solid #3cd6c4;">
             {{ section.settings.primary_text | escape }}
           </a>
         {%- endif -%}
         {%- if section.settings.secondary_text != blank -%}
-          <a href="{{ section.settings.secondary_url | default: '/collections/all' }}" class="hero-btn-secondary" style="background-color: transparent; color: {{ section.settings.text_color }}; padding: 16px 36px; border-radius: 6px; font-family: var(--font-mono-family); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; display: inline-block; transition: all 0.3s ease; border: 1px solid {{ section.settings.border_color }};">
+          <a href="{{ section.settings.secondary_url | default: '/collections/all' }}" class="hero-btn-secondary" style="background-color: transparent; color: #ffffff; padding: 16px 36px; border-radius: 6px; font-family: var(--font-mono-family); font-size: 12px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.1em; text-decoration: none; display: inline-block; transition: all 0.3s ease; border: 1px solid #1f2937;">
             {{ section.settings.secondary_text | escape }}
           </a>
         {%- endif -%}
@@ -158,12 +158,12 @@
 
   .hero-btn-primary:hover {
     background-color: transparent !important;
-    color: {{ section.settings.accent_color }} !important;
+    color: #3cd6c4 !important;
   }
 
   .hero-btn-secondary:hover {
-    border-color: {{ section.settings.accent_color }} !important;
-    color: {{ section.settings.accent_color }} !important;
+    border-color: #3cd6c4 !important;
+    color: #3cd6c4 !important;
   }
 
   .hero-glass-card:hover {
