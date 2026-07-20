@@ -292,11 +292,10 @@
     history.replaceState(null, null, '#' + blockTitle);
   }
 
-  // Handle URL hashes on page load
-  window.addEventListener('DOMContentLoaded', function() {
+  function handleHashChange() {
     var hash = window.location.hash;
     if (hash) {
-      var targetSlug = hash.substring(1);
+      var targetSlug = hash.substring(1).toLowerCase().trim();
       var buttons = document.querySelectorAll('.legal-docs__tab-btn');
       var matchedBtn = null;
       
@@ -308,17 +307,45 @@
       });
       
       if (matchedBtn) {
-        switchLegalTab(matchedBtn);
-        // Scroll slightly above the container for mobile
-        if (window.innerWidth < 990) {
-          var container = document.querySelector('.legal-docs__container');
-          if (container) {
-            container.scrollIntoView({ behavior: 'smooth' });
-          }
+        // Deactivate all buttons
+        var allButtons = document.querySelectorAll('.legal-docs__tab-btn');
+        allButtons.forEach(function(b) {
+          b.classList.remove('active');
+        });
+        
+        // Deactivate all contents
+        var allContents = document.querySelectorAll('.legal-docs__tab-content');
+        allContents.forEach(function(c) {
+          c.classList.remove('active');
+          c.style.display = 'none';
+        });
+        
+        // Activate target button & content
+        matchedBtn.classList.add('active');
+        var targetId = matchedBtn.getAttribute('data-target');
+        var targetContent = document.getElementById(targetId);
+        if (targetContent) {
+          targetContent.style.display = 'block';
+          setTimeout(function() {
+            targetContent.classList.add('active');
+          }, 10);
+        }
+        
+        // Scroll slightly above the container
+        var container = document.querySelector('.legal-docs__container');
+        if (container) {
+          var yOffset = -120; 
+          var y = container.getBoundingClientRect().top + window.pageYOffset + yOffset;
+          window.scrollTo({top: y, behavior: 'smooth'});
         }
       }
     }
-  });
+  }
+
+  // Handle URL hashes on page load
+  window.addEventListener('DOMContentLoaded', handleHashChange);
+  // Handle URL hashes on hashchange (clicking links while on the same page)
+  window.addEventListener('hashchange', handleHashChange);
 </script>
 
 {% schema %}
