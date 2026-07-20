@@ -1,0 +1,61 @@
+{
+  "sections": {
+    "who_we_are": {
+      "type": "about-who-we-are",
+      "settings": {}
+    },
+    "focus_mission": {
+      "type": "about-focus-mission",
+      "settings": {}
+    },
+    "commitments": {
+      "type": "about-commitments",
+      "blocks": {
+        "c_1": {
+          "type": "commitment",
+          "settings": {
+            "number": "01",
+            "title": "Verified Purity",
+            "description": "Every batch independently tested to >99% HPLC purity."
+          }
+        },
+        "c_2": {
+          "type": "commitment",
+          "settings": {
+            "number": "02",
+            "title": "Documented Rigor",
+            "description": "Certificate of Analysis issued and available per lot."
+          }
+        },
+        "c_3": {
+          "type": "commitment",
+          "settings": {
+            "number": "03",
+            "title": "UAE-Wide Delivery",
+            "description": "Cold-chain fulfilled across all seven Emirates."
+          }
+        },
+        "c_4": {
+          "type": "commitment",
+          "settings": {
+            "number": "04",
+            "title": "Research Only",
+            "description": "Supplied exclusively for laboratory and experimental use."
+          }
+        }
+      },
+      "block_order": [
+        "c_1",
+        "c_2",
+        "c_3",
+        "c_4"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "who_we_are",
+    "focus_mission",
+    "commitments"
+  ]
+}

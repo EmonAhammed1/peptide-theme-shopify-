@@ -1,0 +1,330 @@
+<div class="about-commitments section-{{ section.id }}-padding" style="background-color: {{ section.settings.bg_color }}; color: {{ section.settings.text_color }};">
+  <div class="page-width">
+    <!-- Header -->
+    <div class="about-commitments__header">
+      {%- if section.settings.sublabel != blank -%}
+        <div class="about-section-sublabel commitments-sublabel" style="color: {{ section.settings.accent_color }};">
+          — {{ section.settings.sublabel | escape }}
+        </div>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="about-commitments-heading" style="color: {{ section.settings.heading_color }};">
+          {{ section.settings.heading }}
+        </h2>
+      {%- endif -%}
+    </div>
+
+    <!-- Cards Grid -->
+    <div class="about-commitments__grid">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'commitment' -%}
+          <div class="commitment-card" {{ block.shopify_attributes }} style="background: {{ section.settings.card_bg }}; border: 1px solid {{ section.settings.card_border }};">
+            <div class="commitment-card__header">
+              {%- if block.settings.number != blank -%}
+                <div class="commitment-number" style="border-color: {{ section.settings.accent_color }}; color: {{ section.settings.accent_color }};">
+                  {{ block.settings.number | escape }}
+                </div>
+              {%- endif -%}
+            </div>
+            {%- if block.settings.title != blank -%}
+              <h3 class="commitment-card-title" style="color: {{ section.settings.heading_color }};">
+                {{ block.settings.title | escape }}
+              </h3>
+            {%- endif -%}
+            {%- if block.settings.description != blank -%}
+              <p class="commitment-card-description" style="color: {{ section.settings.desc_color }};">
+                {{ block.settings.description | escape }}
+              </p>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .section-{{ section.id }}-padding {
+    padding-top: {{ section.settings.padding_top_mobile }}px;
+    padding-bottom: {{ section.settings.padding_bottom_mobile }}px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .section-{{ section.id }}-padding {
+      padding-top: {{ section.settings.padding_top }}px;
+      padding-bottom: {{ section.settings.padding_bottom }}px;
+    }
+  }
+
+  .about-commitments__header {
+    text-align: center;
+    margin-bottom: 48px;
+  }
+
+  @media screen and (min-width: 750px) {
+    .about-commitments__header {
+      margin-bottom: 64px;
+    }
+  }
+
+  .commitments-sublabel {
+    justify-content: center;
+    margin-bottom: 16px;
+  }
+
+  .about-commitments-heading {
+    font-family: var(--font-heading-family), sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1.25;
+    margin: 0;
+    letter-spacing: -0.01em;
+  }
+
+  @media screen and (min-width: 750px) {
+    .about-commitments-heading {
+      font-size: 38px;
+    }
+  }
+
+  .about-commitments__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  @media screen and (min-width: 749px) {
+    .about-commitments__grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media screen and (min-width: 990px) {
+    .about-commitments__grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  .commitment-card {
+    padding: 32px 24px;
+    border-radius: 12px;
+    transition: all 0.3s ease;
+    text-align: left;
+  }
+
+  .commitment-card:hover {
+    border-color: {{ section.settings.accent_color }} !important;
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(60, 214, 196, 0.04);
+  }
+
+  .commitment-card__header {
+    margin-bottom: 24px;
+  }
+
+  .commitment-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border: 1px solid;
+    border-radius: 50%;
+    font-family: var(--font-mono-family), monospace;
+    font-size: 13px;
+    font-weight: 700;
+  }
+
+  .commitment-card-title {
+    font-family: var(--font-body-family), sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  .commitment-card-description {
+    font-family: var(--font-body-family), sans-serif;
+    font-size: 13px;
+    line-height: 1.6;
+    margin: 0;
+  }
+</style>
+
+{% schema %}
+{
+  "name": "About Us - Commitments",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text",
+      "id": "sublabel",
+      "label": "Sub-label",
+      "default": "WHAT WE STAND FOR"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Four commitments, every order."
+    },
+    {
+      "type": "header",
+      "content": "Card Styling"
+    },
+    {
+      "type": "color",
+      "id": "card_bg",
+      "label": "Card Background",
+      "default": "rgba(10, 13, 18, 0.5)"
+    },
+    {
+      "type": "color",
+      "id": "card_border",
+      "label": "Card Border",
+      "default": "#1F2937"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "bg_color",
+      "label": "Background Color",
+      "default": "#080B10"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading Color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "desc_color",
+      "label": "Description Color",
+      "default": "#8A929E"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent Color",
+      "default": "#3CD6C4"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top (Desktop)",
+      "default": 60
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom (Desktop)",
+      "default": 80
+    },
+    {
+      "type": "range",
+      "id": "padding_top_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Top (Mobile)",
+      "default": 36
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom_mobile",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "label": "Padding Bottom (Mobile)",
+      "default": 48
+    }
+  ],
+  "blocks": [
+    {
+      "type": "commitment",
+      "name": "Commitment Card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number Badge",
+          "default": "01"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Commitment Title"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Short explanation of this commitment."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "About Us - Commitments",
+      "blocks": [
+        {
+          "type": "commitment",
+          "settings": {
+            "number": "01",
+            "title": "Verified Purity",
+            "description": "Every batch independently tested to >99% HPLC purity."
+          }
+        },
+        {
+          "type": "commitment",
+          "settings": {
+            "number": "02",
+            "title": "Documented Rigor",
+            "description": "Certificate of Analysis issued and available per lot."
+          }
+        },
+        {
+          "type": "commitment",
+          "settings": {
+            "number": "03",
+            "title": "UAE-Wide Delivery",
+            "description": "Cold-chain fulfilled across all seven Emirates."
+          }
+        },
+        {
+          "type": "commitment",
+          "settings": {
+            "number": "04",
+            "title": "Research Only",
+            "description": "Supplied exclusively for laboratory and experimental use."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
