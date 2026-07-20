@@ -119,16 +119,10 @@
   @media screen and (max-width: 989px) {
     .legal-docs__tabs-nav {
       display: flex;
-      overflow-x: auto;
-      scroll-behavior: smooth;
-      -webkit-overflow-scrolling: touch;
-      padding-bottom: 12px;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding-bottom: 24px;
       border-bottom: 1px solid rgba(255, 255, 255, 0.08);
-      gap: 20px;
-      scrollbar-width: none; /* Firefox */
-    }
-    .legal-docs__tabs-nav::-webkit-scrollbar {
-      display: none; /* Chrome/Safari */
     }
   }
 
@@ -159,8 +153,13 @@
   @media screen and (max-width: 989px) {
     .legal-docs__tab-btn {
       white-space: nowrap;
-      padding: 8px 4px;
+      padding: 8px 16px;
       width: auto;
+      border: 1px solid rgba(255, 255, 255, 0.08) !important;
+      border-radius: 30px;
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.02);
+      justify-content: center;
     }
   }
 
@@ -176,8 +175,9 @@
 
   @media screen and (max-width: 989px) {
     .legal-docs__tab-btn.active {
-      color: {{ section.settings.accent_color }} !important;
-      border-bottom: 2px solid {{ section.settings.accent_color }} !important;
+      color: #000000 !important;
+      background: {{ section.settings.accent_color }} !important;
+      border-color: {{ section.settings.accent_color }} !important;
     }
   }
 
